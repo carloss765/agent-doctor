@@ -9,3 +9,8 @@ export type InitResult = {
   root: string;
   files: GeneratedFile[];
 };
+
+export type PrescribeResult = {
+  root: string;
+  files: GeneratedFile[];
+};

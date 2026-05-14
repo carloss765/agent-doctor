@@ -1,13 +1,6 @@
-import { access, mkdir, writeFile } from "node:fs/promises";
-import path from "node:path";
-
 import type { ScanResult } from "../scanner/types.js";
 import type { GeneratedFile, InitResult } from "./types.js";
-
-type PlannedFile = {
-  relativePath: string;
-  content: string;
-};
+import { writeIfMissing, type PlannedFile } from "./writeIfMissing.js";
 
 export async function initProject(scan: ScanResult): Promise<InitResult> {
   const plannedFiles = createPlannedFiles(scan);
@@ -34,34 +27,6 @@ function createPlannedFiles(scan: ScanResult): PlannedFile[] {
       content: renderEnvExample()
     }
   ];
-}
-
-async function writeIfMissing(root: string, plannedFile: PlannedFile): Promise<GeneratedFile> {
-  const targetPath = path.join(root, plannedFile.relativePath);
-
-  if (await exists(targetPath)) {
-    return {
-      path: plannedFile.relativePath,
-      status: "skipped"
-    };
-  }
-
-  await mkdir(path.dirname(targetPath), { recursive: true });
-  await writeFile(targetPath, plannedFile.content, "utf8");
-
-  return {
-    path: plannedFile.relativePath,
-    status: "created"
-  };
-}
-
-async function exists(targetPath: string): Promise<boolean> {
-  try {
-    await access(targetPath);
-    return true;
-  } catch {
-    return false;
-  }
 }
 
 function renderAgentsMd(scan: ScanResult): string {

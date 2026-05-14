@@ -729,3 +729,5 @@ Estado actual:
 - Milestone 2: scanner estructurado con archivos base, Git, lockfile y scripts Node.
 - Milestone 3: analyzer con readiness score, status y next steps.
 - Milestone 4: comando `init` para crear `AGENTS.md` y `.env.example` faltantes sin sobrescribir archivos existentes.
+- Milestone 5: presentación CLI con color opcional y salida compacta para `scan`.
+- Milestone 6: comando `prescribe` para generar `.agent-doctor/prescription.md` sin sobrescribir.
