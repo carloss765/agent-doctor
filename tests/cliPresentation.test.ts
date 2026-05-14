@@ -37,6 +37,7 @@ describe("CLI presentation", () => {
   it("shows detected and missing agent tools in scan output", () => {
     const output = formatScanResult(createScanResult(), { color: false });
 
+    expect(output).toContain("/\\  __ \\");
     expect(output).toContain("Score: 40/100 ████░░░░░░");
     expect(output).toContain("Tool use:");
     expect(output).toContain("Codex: ready AGENTS.md");
