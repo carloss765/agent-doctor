@@ -1,5 +1,5 @@
 {
-  "name": "agent-ready",
+  "name": "@agent-ready/cli",
   "version": "0.1.0",
   "description": "CLI that checks whether a repository is ready for coding agents.",
   "type": "module",

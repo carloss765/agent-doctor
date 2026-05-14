@@ -62,10 +62,10 @@ The current version focuses on Node.js and TypeScript projects. It scans for:
 Run it directly with `npx`:
 
 ```bash
-npx agent-ready scan
+npx @agent-ready/cli scan
 ```
 
-The public package uses the unscoped npm name `agent-ready`.
+The public package uses the scoped npm package `@agent-ready/cli` and exposes the `agent-ready` binary.
 
 For local development:
 
@@ -82,7 +82,7 @@ pnpm dev -- scan
 Scans the repository without modifying files.
 
 ```bash
-npx agent-ready scan
+npx @agent-ready/cli scan
 ```
 
 Useful when you want to know what the repo already has and what is missing.
@@ -90,7 +90,7 @@ Useful when you want to know what the repo already has and what is missing.
 You can scan another directory with `--root`:
 
 ```bash
-npx agent-ready scan --root ./path/to/project
+npx @agent-ready/cli scan --root ./path/to/project
 ```
 
 ### `init`
@@ -98,7 +98,7 @@ npx agent-ready scan --root ./path/to/project
 Creates safe starter files without overwriting existing files.
 
 ```bash
-npx agent-ready init
+npx @agent-ready/cli init
 ```
 
 Currently generated files:
@@ -113,7 +113,7 @@ If either file already exists, Agent Ready skips it.
 Creates a prescription file for your coding agent.
 
 ```bash
-npx agent-ready prescribe
+npx @agent-ready/cli prescribe
 ```
 
 Generated file:
@@ -127,19 +127,19 @@ Give that file to your coding agent and ask it to apply the recommended reposito
 1. Diagnose the project:
 
 ```bash
-npx agent-ready scan
+npx @agent-ready/cli scan
 ```
 
 2. Generate missing base files:
 
 ```bash
-npx agent-ready init
+npx @agent-ready/cli init
 ```
 
 3. Create instructions for your coding agent:
 
 ```bash
-npx agent-ready prescribe
+npx @agent-ready/cli prescribe
 ```
 
 4. Ask your agent to read the prescription:
@@ -152,7 +152,7 @@ Do not modify secrets or run destructive commands.
 5. Re-scan after changes:
 
 ```bash
-npx agent-ready scan
+npx @agent-ready/cli scan
 ```
 
 ## Commands To Test The Tool

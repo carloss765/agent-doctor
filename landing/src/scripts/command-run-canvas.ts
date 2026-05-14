@@ -14,15 +14,15 @@ if (canvas) {
       "  \\/_/\\/_/   \\/_____/   \\/_____/   \\/_/ \\/_/     \\/_/     \\/_/ /_/   \\/_____/   \\/_/\\/_/   \\/____/   \\/_____/"
     ];
     const commandRows = [
-      "$ npx agent-ready scan",
+      "$ npx @agent-ready/cli scan",
       ".. Scanning repository",
       "✓ README.md found",
       "✓ package.json found",
       "✕ AGENTS.md missing",
-      "$ npx agent-ready init",
+      "$ npx @agent-ready/cli init",
       "✓ Created AGENTS.md",
       "✓ Created .env.example",
-      "$ npx agent-ready prescribe",
+      "$ npx @agent-ready/cli prescribe",
       "✓ Created prescription.md"
     ];
     let width = 0;

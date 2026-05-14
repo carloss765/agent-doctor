@@ -2,7 +2,7 @@
 
 ## Goal
 
-Make the default CLI entrypoint useful for `npx agent-ready`.
+Make the default CLI entrypoint useful for `npx @agent-ready/cli`.
 
 ## Scope
 

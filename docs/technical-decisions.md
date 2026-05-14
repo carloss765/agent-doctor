@@ -48,7 +48,7 @@ Technology choices should be evaluated using these criteria:
 | Testing         | Vitest         | Fast test runner with good TypeScript support.                                        |
 | Formatting      | Prettier       | Keeps formatting consistent with minimal discussion.                                  |
 | Linting         | ESLint         | Catches common TypeScript and JavaScript issues.                                      |
-| Distribution    | npm package    | Matches the expected usage: `npx agent-ready`.                                        |
+| Distribution    | npm package    | Matches the expected usage: `npx @agent-ready/cli`.                                   |
 | CI              | GitHub Actions | Standard choice for open source validation and release checks.                        |
 
 ## Initial Recommendation
@@ -86,17 +86,17 @@ Each module should have one clear responsibility.
 ## Proposed Commands
 
 ```bash
-npx agent-ready scan
-npx agent-ready init
-npx agent-ready prescribe
+npx @agent-ready/cli scan
+npx @agent-ready/cli init
+npx @agent-ready/cli prescribe
 ```
 
 Optional aliases can be added later:
 
 ```bash
-npx agent-ready check
-npx agent-ready fix
-npx agent-ready prompt
+npx @agent-ready/cli check
+npx @agent-ready/cli fix
+npx @agent-ready/cli prompt
 ```
 
 ## Working Agreement
