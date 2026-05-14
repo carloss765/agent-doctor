@@ -1,22 +1,23 @@
 import { analyzeReadiness } from "../analyzer/analyzeReadiness.js";
 import type { ScanResult } from "../scanner/types.js";
+import { heading, renderHeader, success, warning, type PresentationOptions } from "./presentation.js";
 
-export function formatScanResult(result: ScanResult): string {
+export function formatScanResult(result: ScanResult, options: PresentationOptions = {}): string {
   const analysis = analyzeReadiness(result);
   const lines = [
-    "Agent Doctor",
+    ...renderHeader(options),
     "",
     "Scan complete. No files were modified.",
     "",
-    "Repository:",
+    heading("Repository:", options),
     `  Path: ${result.root}`,
     `  Git: ${result.gitDetected ? "detected" : "not detected"}`,
     `  Package manager: ${result.packageManager}`,
     `  Project manifest: ${formatInlineList(result.manifests)}`,
     "",
-    "Agent readiness:",
+    heading("Agent readiness:", options),
     `  Score: ${analysis.score}/100`,
-    `  Status: ${analysis.status}`,
+    `  Status: ${formatStatus(analysis.status, options)}`,
     "",
     formatList(
       "Found",
@@ -31,7 +32,7 @@ export function formatScanResult(result: ScanResult): string {
       result.scripts.map((script) => `${script.name}: ${script.command}`)
     ),
     formatList("Missing scripts", result.missingScripts),
-    "Next steps:",
+    heading("Next steps:", options),
     ...analysis.nextSteps.map((step) => `  - ${step}`)
   ];
 
@@ -47,4 +48,16 @@ function formatList(title: string, items: string[]): string {
 
 function formatInlineList(items: string[]): string {
   return items.length > 0 ? items.join(", ") : "not detected";
+}
+
+function formatStatus(status: string, options: PresentationOptions): string {
+  if (status === "Ready") {
+    return success(status, options);
+  }
+
+  if (status === "Almost ready") {
+    return warning(status, options);
+  }
+
+  return status;
 }

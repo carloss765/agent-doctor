@@ -3,6 +3,7 @@ import { Command } from "commander";
 
 import { formatInitResult } from "./cli/formatInitResult.js";
 import { formatScanResult } from "./cli/formatScanResult.js";
+import { shouldUseColor } from "./cli/presentation.js";
 import { initProject } from "./generator/initProject.js";
 import { scanRepository } from "./scanner/scanRepository.js";
 
@@ -20,7 +21,7 @@ program
   .action(async (options: { root: string }) => {
     try {
       const result = await scanRepository(options.root);
-      console.log(formatScanResult(result));
+      console.log(formatScanResult(result, { color: shouldUseColor() }));
     } catch (error) {
       const message = error instanceof Error ? error.message : "Unknown error";
       console.error(
@@ -43,11 +44,12 @@ program
   .command("init")
   .description("Generate missing Agent Doctor base files without overwriting existing files.")
   .option("-r, --root <path>", "Repository root to initialize.", process.cwd())
-  .action(async (options: { root: string }) => {
+  .option("--yes", "Run non-interactively.")
+  .action(async (options: { root: string; yes?: boolean }) => {
     try {
       const scan = await scanRepository(options.root);
       const result = await initProject(scan);
-      console.log(formatInitResult(result));
+      console.log(formatInitResult(result, { color: shouldUseColor() }));
     } catch (error) {
       const message = error instanceof Error ? error.message : "Unknown error";
       console.error(

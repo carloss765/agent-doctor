@@ -728,3 +728,4 @@ Estado actual:
 - Milestone 1: scaffold CLI, scripts, tests, build y CI.
 - Milestone 2: scanner estructurado con archivos base, Git, lockfile y scripts Node.
 - Milestone 3: analyzer con readiness score, status y next steps.
+- Milestone 4: comando `init` para crear `AGENTS.md` y `.env.example` faltantes sin sobrescribir archivos existentes.
