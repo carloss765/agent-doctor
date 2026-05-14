@@ -1,5 +1,6 @@
 export type PresentationOptions = {
   color?: boolean;
+  terminalColumns?: number;
 };
 
 type ProgressOptions = PresentationOptions & {
@@ -27,17 +28,23 @@ const asciiLogo = [
   "  \\/_/\\/_/   \\/_____/   \\/_____/   \\/_/ \\/_/     \\/_/   \\/____/   \\/_____/   \\/_____/     \\/_/   \\/_____/   \\/_/ /_/"
 ];
 
+const compactLogo = ["AGENT DOCTOR"];
+const fullLogoMinColumns = Math.max(...asciiLogo.map((line) => line.length));
+
 export function shouldUseColor(): boolean {
   return Boolean(process.stdout.isTTY) && process.env.NO_COLOR === undefined;
 }
 
 export function renderHeader(options: PresentationOptions = {}): string[] {
   const color = options.color ?? false;
+  const terminalColumns = options.terminalColumns ?? process.stdout.columns ?? fullLogoMinColumns;
+  const logo = terminalColumns >= fullLogoMinColumns ? asciiLogo : compactLogo;
+  const subtitle =
+    terminalColumns >= 40
+      ? "Repository readiness for coding agents."
+      : "Repo readiness for agents.";
 
-  return [
-    ...asciiLogo.map((line) => paint(line, cyan, color)),
-    paint("Repository readiness for coding agents.", dim, color)
-  ];
+  return [...logo.map((line) => paint(line, cyan, color)), paint(subtitle, dim, color)];
 }
 
 export function renderTitle(options: PresentationOptions = {}): string {
