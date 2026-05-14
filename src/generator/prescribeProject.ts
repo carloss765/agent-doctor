@@ -55,6 +55,14 @@ ${renderList(scan.scripts.map((script) => `${script.name}: ${script.command}`))}
 
 ${renderList(scan.missingScripts)}
 
+## Agent Tools Detected
+
+${renderList(scan.agentTools.filter((tool) => tool.detected).map((tool) => `${tool.name}: ${tool.files.join(", ")}`))}
+
+## Skills Detected
+
+${renderList(scan.skills.filter((skill) => skill.detected).map((skill) => `${skill.directory}: ${skill.count}`))}
+
 ## Recommended Next Steps
 
 ${renderList(analysis.nextSteps)}

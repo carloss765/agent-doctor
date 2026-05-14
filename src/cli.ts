@@ -4,7 +4,8 @@ import { Command } from "commander";
 import { formatInitResult } from "./cli/formatInitResult.js";
 import { formatPrescribeResult } from "./cli/formatPrescribeResult.js";
 import { formatScanResult } from "./cli/formatScanResult.js";
-import { shouldUseColor } from "./cli/presentation.js";
+import { parseRootOption } from "./cli/parseRootOption.js";
+import { shouldUseColor, withProgress } from "./cli/presentation.js";
 import { initProject } from "./generator/initProject.js";
 import { prescribeProject } from "./generator/prescribeProject.js";
 import { scanRepository } from "./scanner/scanRepository.js";
@@ -16,16 +17,16 @@ program
   .description("Check whether a repository is ready for coding agents.")
   .version("0.1.0")
   .option("-r, --root <path>", "Repository root to scan.", process.cwd())
-  .action(async (options: { root: string }) => {
-    await runScan(options.root);
+  .action(async () => {
+    await runScan(getRootOption());
   });
 
 program
   .command("scan")
   .description("Scan the current repository without modifying files.")
   .option("-r, --root <path>", "Repository root to scan.", process.cwd())
-  .action(async (options: { root: string }) => {
-    await runScan(options.root);
+  .action(async () => {
+    await runScan(getRootOption());
   });
 
 program
@@ -33,11 +34,15 @@ program
   .description("Generate a prescription prompt for an external coding agent.")
   .option("-r, --root <path>", "Repository root to inspect.", process.cwd())
   .option("--yes", "Run non-interactively.")
-  .action(async (options: { root: string; yes?: boolean }) => {
+  .action(async () => {
     try {
-      const scan = await scanRepository(options.root);
-      const result = await prescribeProject(scan);
-      console.log(formatPrescribeResult(result, { color: shouldUseColor() }));
+      const color = shouldUseColor();
+      const result = await withProgress(
+        "Generating prescription...",
+        async () => prescribeProject(await scanRepository(getRootOption())),
+        { color }
+      );
+      console.log(formatPrescribeResult(result, { color }));
     } catch (error) {
       const message = error instanceof Error ? error.message : "Unknown error";
       console.error(
@@ -61,11 +66,15 @@ program
   .description("Generate missing Agent Doctor base files without overwriting existing files.")
   .option("-r, --root <path>", "Repository root to initialize.", process.cwd())
   .option("--yes", "Run non-interactively.")
-  .action(async (options: { root: string; yes?: boolean }) => {
+  .action(async () => {
     try {
-      const scan = await scanRepository(options.root);
-      const result = await initProject(scan);
-      console.log(formatInitResult(result, { color: shouldUseColor() }));
+      const color = shouldUseColor();
+      const result = await withProgress(
+        "Preparing base files...",
+        async () => initProject(await scanRepository(getRootOption())),
+        { color }
+      );
+      console.log(formatInitResult(result, { color }));
     } catch (error) {
       const message = error instanceof Error ? error.message : "Unknown error";
       console.error(
@@ -92,8 +101,11 @@ program.parseAsync(process.argv).catch((error: unknown) => {
 
 async function runScan(root: string): Promise<void> {
   try {
-    const result = await scanRepository(root);
-    console.log(formatScanResult(result, { color: shouldUseColor() }));
+    const color = shouldUseColor();
+    const result = await withProgress("Scanning repository...", async () => scanRepository(root), {
+      color
+    });
+    console.log(formatScanResult(result, { color }));
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unknown error";
     console.error(
@@ -110,4 +122,8 @@ async function runScan(root: string): Promise<void> {
     );
     process.exitCode = 1;
   }
+}
+
+function getRootOption(): string {
+  return parseRootOption(process.argv.slice(2), process.cwd());
 }

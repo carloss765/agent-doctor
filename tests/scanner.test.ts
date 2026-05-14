@@ -167,6 +167,35 @@ describe("scanRepository", () => {
       await rm(root, { recursive: true, force: true });
     }
   });
+
+  it("detects agent tools and local skills", async () => {
+    const root = await createTempRepository({
+      "AGENTS.md": "# Instructions",
+      "CLAUDE.md": "# Claude",
+      "opencode.jsonc": "{}",
+      ".agents/skills/react/SKILL.md": "# React",
+      ".agents/skills/node/SKILL.md": "# Node",
+      ".claude/skills/review/SKILL.md": "# Review"
+    });
+
+    try {
+      const result = await scanRepository(root);
+
+      expect(result.agentTools).toEqual([
+        { name: "Codex", detected: true, files: ["AGENTS.md", ".agents"] },
+        { name: "Claude Code", detected: true, files: ["CLAUDE.md", ".claude"] },
+        { name: "OpenCode", detected: true, files: ["opencode.jsonc"] },
+        { name: "Cursor", detected: false, files: [] },
+        { name: "Windsurf", detected: false, files: [] }
+      ]);
+      expect(result.skills).toEqual([
+        { directory: ".agents/skills", detected: true, count: 2 },
+        { directory: ".claude/skills", detected: true, count: 1 }
+      ]);
+    } finally {
+      await rm(root, { recursive: true, force: true });
+    }
+  });
 });
 
 function labels(signals: Array<{ label: string }>): string[] {
@@ -185,6 +214,7 @@ async function createTempRepository(files: Record<string, string>): Promise<stri
         return;
       }
 
+      await mkdir(path.dirname(target), { recursive: true });
       await writeFile(target, content);
     })
   );

@@ -1,13 +1,15 @@
-import { access, readFile, readdir } from "node:fs/promises";
+import { access, readFile, readdir, stat } from "node:fs/promises";
 import path from "node:path";
 
 import type {
+  AgentToolSignal,
   NodeScript,
   NodeScriptName,
   PackageManager,
   ProjectManifest,
   RepositorySignal,
-  ScanResult
+  ScanResult,
+  SkillSignal
 } from "./types.js";
 
 const manifestFiles: ProjectManifest[] = [
@@ -29,12 +31,24 @@ const packageManagerFiles: Array<{ label: string; manager: PackageManager }> = [
   { label: "bun.lock", manager: "bun" }
 ];
 
+const agentToolFiles: Array<{ name: AgentToolSignal["name"]; files: string[] }> = [
+  { name: "Codex", files: ["AGENTS.md", ".agents"] },
+  { name: "Claude Code", files: ["CLAUDE.md", ".claude"] },
+  { name: "OpenCode", files: ["opencode.jsonc", "opencode.json"] },
+  { name: "Cursor", files: [".cursor", ".cursorrules"] },
+  { name: "Windsurf", files: [".windsurf", ".windsurfrules"] }
+];
+
+const skillDirectories = [".agents/skills", ".claude/skills"] as const;
+
 export async function scanRepository(root: string = process.cwd()): Promise<ScanResult> {
   const normalizedRoot = path.resolve(root);
   const entries = new Set(await readDirectoryEntries(normalizedRoot));
   const packageManagerLockfile = detectPackageManagerLockfile(entries);
   const gitDetected = entries.has(".git");
   const scripts = entries.has("package.json") ? await readNodeScripts(normalizedRoot) : [];
+  const agentTools = detectAgentTools(entries);
+  const skills = await detectSkills(normalizedRoot);
   const signals = [
     ...requiredFiles.map((file) => createSignal(file, entries.has(file))),
     createSignal("Git repository", gitDetected),
@@ -54,6 +68,8 @@ export async function scanRepository(root: string = process.cwd()): Promise<Scan
     manifests: manifestFiles.filter((file) => entries.has(file)),
     scripts,
     missingScripts: detectMissingScripts(scripts),
+    agentTools,
+    skills,
     found: signals.filter((signal) => signal.found),
     missing: signals.filter((signal) => !signal.found)
   };
@@ -131,6 +147,51 @@ function detectMissingScripts(scripts: NodeScript[]): NodeScriptName[] {
   const detectedScriptNames = new Set(scripts.map((script) => script.name));
 
   return nodeScriptNames.filter((scriptName) => !detectedScriptNames.has(scriptName));
+}
+
+function detectAgentTools(entries: Set<string>): AgentToolSignal[] {
+  return agentToolFiles.map((tool) => {
+    const files = tool.files.filter((file) => entries.has(file));
+
+    return {
+      name: tool.name,
+      detected: files.length > 0,
+      files
+    };
+  });
+}
+
+async function detectSkills(root: string): Promise<SkillSignal[]> {
+  return Promise.all(
+    skillDirectories.map(async (directory) => {
+      const absoluteDirectory = path.join(root, directory);
+
+      if (!(await isDirectory(absoluteDirectory))) {
+        return {
+          directory,
+          detected: false,
+          count: 0
+        };
+      }
+
+      const entries = await readdir(absoluteDirectory, { withFileTypes: true });
+      const count = entries.filter((entry) => entry.isDirectory()).length;
+
+      return {
+        directory,
+        detected: count > 0,
+        count
+      };
+    })
+  );
+}
+
+async function isDirectory(targetPath: string): Promise<boolean> {
+  try {
+    return (await stat(targetPath)).isDirectory();
+  } catch {
+    return false;
+  }
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
