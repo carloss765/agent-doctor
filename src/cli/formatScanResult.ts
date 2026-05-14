@@ -46,6 +46,22 @@ export function formatScanResult(result: ScanResult, options: PresentationOption
       options
     ),
     formatList("Missing scripts", result.missingScripts, missingItem, options),
+    formatList(
+      "Agent tools detected",
+      result.agentTools
+        .filter((tool) => tool.detected)
+        .map((tool) => `${tool.name}: ${tool.files.join(", ")}`),
+      successItem,
+      options
+    ),
+    formatList(
+      "Skills detected",
+      result.skills
+        .filter((skill) => skill.detected)
+        .map((skill) => `${skill.directory}: ${skill.count}`),
+      successItem,
+      options
+    ),
     heading("Next steps:", options),
     ...analysis.nextSteps.map((step) => `  - ${step}`)
   ];
