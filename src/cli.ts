@@ -14,32 +14,18 @@ const program = new Command();
 program
   .name("agent-doctor")
   .description("Check whether a repository is ready for coding agents.")
-  .version("0.1.0");
+  .version("0.1.0")
+  .option("-r, --root <path>", "Repository root to scan.", process.cwd())
+  .action(async (options: { root: string }) => {
+    await runScan(options.root);
+  });
 
 program
   .command("scan")
   .description("Scan the current repository without modifying files.")
   .option("-r, --root <path>", "Repository root to scan.", process.cwd())
   .action(async (options: { root: string }) => {
-    try {
-      const result = await scanRepository(options.root);
-      console.log(formatScanResult(result, { color: shouldUseColor() }));
-    } catch (error) {
-      const message = error instanceof Error ? error.message : "Unknown error";
-      console.error(
-        [
-          "Agent Doctor",
-          "",
-          "Scan failed.",
-          "",
-          "Error:",
-          `  ${message}`,
-          "",
-          "No files were modified."
-        ].join("\n")
-      );
-      process.exitCode = 1;
-    }
+    await runScan(options.root);
   });
 
 program
@@ -103,3 +89,25 @@ program.parseAsync(process.argv).catch((error: unknown) => {
   console.error(`Agent Doctor failed: ${message}`);
   process.exitCode = 1;
 });
+
+async function runScan(root: string): Promise<void> {
+  try {
+    const result = await scanRepository(root);
+    console.log(formatScanResult(result, { color: shouldUseColor() }));
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Unknown error";
+    console.error(
+      [
+        "Agent Doctor",
+        "",
+        "Scan failed.",
+        "",
+        "Error:",
+        `  ${message}`,
+        "",
+        "No files were modified."
+      ].join("\n")
+    );
+    process.exitCode = 1;
+  }
+}
