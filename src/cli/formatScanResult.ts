@@ -20,6 +20,11 @@ export function formatScanResult(result: ScanResult): string {
       "Missing",
       result.missing.map((signal) => signal.label)
     ),
+    formatList(
+      "Scripts detected",
+      result.scripts.map((script) => `${script.name}: ${script.command}`)
+    ),
+    formatList("Missing scripts", result.missingScripts),
     "Next steps:",
     ...formatNextSteps(result)
   ];
@@ -39,9 +44,19 @@ function formatInlineList(items: string[]): string {
 }
 
 function formatNextSteps(result: ScanResult): string[] {
-  if (result.missing.length === 0) {
+  if (result.missing.length === 0 && result.missingScripts.length === 0) {
     return ["  - This repository has the basic files needed for coding agents."];
   }
 
-  return ["  - Run agent-doctor init to generate missing base files."];
+  const steps: string[] = [];
+
+  if (result.missing.length > 0) {
+    steps.push("  - Run agent-doctor init to generate missing base files.");
+  }
+
+  if (result.missingScripts.length > 0) {
+    steps.push("  - Add missing validation scripts before delegating work to coding agents.");
+  }
+
+  return steps;
 }
