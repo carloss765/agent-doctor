@@ -10,7 +10,12 @@ describe("scanRepository", () => {
   it("detects a partial Node repository", async () => {
     const root = await createTempRepository({
       "README.md": "# Test Project",
-      "package.json": "{}",
+      "package.json": JSON.stringify({
+        scripts: {
+          dev: "vite",
+          build: "tsc -p tsconfig.json"
+        }
+      }),
       "pnpm-lock.yaml": "",
       ".git/": ""
     });
@@ -22,6 +27,11 @@ describe("scanRepository", () => {
       expect(result.packageManagerLockfile).toBe("pnpm-lock.yaml");
       expect(result.gitDetected).toBe(true);
       expect(result.manifests).toEqual(["package.json"]);
+      expect(result.scripts).toEqual([
+        { name: "dev", command: "vite" },
+        { name: "build", command: "tsc -p tsconfig.json" }
+      ]);
+      expect(result.missingScripts).toEqual(["test", "lint", "format"]);
       expect(labels(result.found)).toEqual([
         "README.md",
         "package.json",
@@ -44,6 +54,8 @@ describe("scanRepository", () => {
       expect(result.packageManagerLockfile).toBeNull();
       expect(result.gitDetected).toBe(false);
       expect(result.manifests).toEqual([]);
+      expect(result.scripts).toEqual([]);
+      expect(result.missingScripts).toEqual(["dev", "build", "test", "lint", "format"]);
       expect(labels(result.found)).toEqual([]);
       expect(labels(result.missing)).toEqual([
         "README.md",
@@ -63,7 +75,15 @@ describe("scanRepository", () => {
       "README.md": "# Test Project",
       "AGENTS.md": "# Instructions",
       ".env.example": "TEST_VALUE=",
-      "package.json": "{}",
+      "package.json": JSON.stringify({
+        scripts: {
+          dev: "tsx src/cli.ts",
+          build: "tsc -p tsconfig.json",
+          test: "vitest run",
+          lint: "eslint .",
+          format: "prettier --write ."
+        }
+      }),
       "package-lock.json": "",
       ".git/": ""
     });
@@ -72,6 +92,14 @@ describe("scanRepository", () => {
       const result = await scanRepository(root);
 
       expect(result.packageManager).toBe("npm");
+      expect(result.scripts).toEqual([
+        { name: "dev", command: "tsx src/cli.ts" },
+        { name: "build", command: "tsc -p tsconfig.json" },
+        { name: "test", command: "vitest run" },
+        { name: "lint", command: "eslint ." },
+        { name: "format", command: "prettier --write ." }
+      ]);
+      expect(result.missingScripts).toEqual([]);
       expect(labels(result.found)).toEqual([
         "README.md",
         "AGENTS.md",
@@ -106,6 +134,38 @@ describe("scanRepository", () => {
     await expectPackageManager("pnpm-lock.yaml", "pnpm");
     await expectPackageManager("package-lock.json", "npm");
     await expectPackageManager("yarn.lock", "yarn");
+  });
+
+  it("ignores empty scripts instead of inventing commands", async () => {
+    const root = await createTempRepository({
+      "package.json": JSON.stringify({
+        scripts: {
+          test: "   ",
+          lint: "eslint ."
+        }
+      })
+    });
+
+    try {
+      const result = await scanRepository(root);
+
+      expect(result.scripts).toEqual([{ name: "lint", command: "eslint ." }]);
+      expect(result.missingScripts).toEqual(["dev", "build", "test", "format"]);
+    } finally {
+      await rm(root, { recursive: true, force: true });
+    }
+  });
+
+  it("returns a clear error for invalid package.json", async () => {
+    const root = await createTempRepository({
+      "package.json": "{ invalid json"
+    });
+
+    try {
+      await expect(scanRepository(root)).rejects.toThrow("Unable to parse package.json:");
+    } finally {
+      await rm(root, { recursive: true, force: true });
+    }
   });
 });
 
