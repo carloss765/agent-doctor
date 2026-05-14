@@ -37,28 +37,32 @@ import "../styles/global.css";
             Check whether a project has the context, commands, safety files, and agent tooling it
             needs before you delegate work to Codex, Claude Code, OpenCode, Cursor, or Windsurf.
           </p>
+          <div class="hero-command" aria-label="Command to run Agent Doctor">
+            <span>$</span>
+            <code>npx agent-doctor scan</code>
+          </div>
           <div class="hero-actions" aria-label="Primary actions">
-            <a class="button button-primary" href="#install">Run the CLI</a>
+            <a class="button button-primary" href="#install">Install CLI</a>
             <a class="button button-secondary" href="#preview">See output</a>
           </div>
         </div>
         <div class="hero-terminal" id="preview" aria-label="Agent Doctor scan output preview">
           <div class="terminal-top" aria-hidden="true">
-            <span></span>
-            <span></span>
-            <span></span>
+            <span class="window-control window-close"></span>
+            <span class="window-control window-minimize"></span>
+            <span class="window-control window-maximize"></span>
           </div>
-          <pre><code>$ npx agent-doctor scan
-.. Scanning repository...
+          <pre><code><span class="terminal-muted">$</span> npx agent-doctor scan
+<span class="terminal-muted">.. Scanning repository...</span>
 
 Agent readiness
-  Score: 100/100 ██████████
-  Status: Ready
+  Score: <span class="terminal-ok">100/100 ██████████</span>
+  Status: <span class="terminal-ok">Ready</span>
 
 Tool use
-  ✓ Codex: ready AGENTS.md, .agents
-  - Claude Code: missing
-  - OpenCode: missing
+  <span class="terminal-ok">✓ Codex: ready AGENTS.md, .agents</span>
+  <span class="terminal-danger">✕ Claude Code: missing</span>
+  <span class="terminal-danger">✕ OpenCode: missing</span>
 
 Next steps
   - This repository is ready for coding agents.</code></pre>
@@ -111,16 +115,31 @@ Next steps
             <span>01</span>
             <h3>Context</h3>
             <p>README, AGENTS.md, architecture notes, safety rules, and environment examples.</p>
+            <ul class="scan-list" aria-label="Context check examples">
+              <li class="scan-ok">✓ README.md found</li>
+              <li class="scan-danger">✕ AGENTS.md missing</li>
+              <li class="scan-danger">✕ .env.example missing</li>
+            </ul>
           </article>
           <article>
             <span>02</span>
             <h3>Commands</h3>
             <p>Development, build, test, lint, and format scripts that make verification clear.</p>
+            <ul class="scan-list" aria-label="Command check examples">
+              <li class="scan-ok">✓ build script found</li>
+              <li class="scan-ok">✓ lint script found</li>
+              <li class="scan-danger">✕ test script missing</li>
+            </ul>
           </article>
           <article>
             <span>03</span>
             <h3>Agent tools</h3>
             <p>Codex, Claude Code, OpenCode, Cursor, Windsurf, and local skill directories.</p>
+            <ul class="scan-list" aria-label="Agent tool check examples">
+              <li class="scan-ok">✓ Codex ready</li>
+              <li class="scan-danger">✕ Claude Code missing</li>
+              <li class="scan-danger">✕ OpenCode missing</li>
+            </ul>
           </article>
         </div>
       </section>
@@ -132,14 +151,14 @@ Next steps
         </div>
         <div class="output-grid">
           <pre><code>Found
-  ✓ README.md
-  ✓ package.json
-  ✓ Git repository
+  <span class="scan-ok">✓ README.md</span>
+  <span class="scan-ok">✓ package.json</span>
+  <span class="scan-ok">✓ Git repository</span>
 
 Missing
-  - AGENTS.md
-  - .env.example
-  - test script
+  <span class="scan-danger">✕ AGENTS.md</span>
+  <span class="scan-danger">✕ .env.example</span>
+  <span class="scan-danger">✕ test script</span>
 
 Prescription
   .agent-doctor/prescription.md</code></pre>
