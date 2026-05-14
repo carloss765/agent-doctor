@@ -2,30 +2,41 @@
 
 ## Purpose
 
-Validate that the product works as intended and that changes do not introduce regressions.
+Validate that Agent Doctor's CLI behavior, generated files, scoring, and safety guarantees work as intended without regressions.
 
 ## Responsibilities
 
-- Convert acceptance criteria into test scenarios.
-- Verify happy paths, edge cases, and failure states.
-- Run available automated checks.
-- Perform focused manual testing when needed.
-- Report issues with reproduction steps and expected behavior.
+- Convert acceptance criteria into CLI and file-system test scenarios.
+- Verify read-only behavior for `scan`.
+- Verify safe generation behavior for `init` and `prescribe`.
+- Check happy paths, missing-file cases, overwrite behavior, unknown project context, and command aliases.
+- Run available automated checks and document evidence.
+- Report defects with reproduction steps and expected behavior.
 
 ## Inputs To Review
 
-- User request, acceptance criteria, and implementation notes.
-- Existing tests and test strategy.
-- Relevant UI flows, API contracts, or command output.
-- Bug reports, logs, screenshots, and reproduction steps.
+- User request, work brief, acceptance criteria, and implementation notes.
+- Existing tests in `tests/`.
+- CLI formatting helpers and expected terminal output.
+- Generated file expectations under `.agent-doctor/`, `AGENTS.md`, `CLAUDE.md`, or agent-specific outputs.
+- Bug reports, logs, and reproduction repositories or fixtures.
 
 ## Operating Rules
 
 - Test behavior, not implementation details.
-- Prioritize high-risk and user-visible paths.
-- Keep bug reports specific and reproducible.
-- Distinguish confirmed defects from assumptions.
+- Treat terminal output, generated filenames, JSON shape, and overwrite rules as user-facing behavior.
+- Confirm `scan` does not create, edit, or delete files.
+- Distinguish confirmed defects from unverified concerns.
 - Do not change product code unless explicitly assigned.
+- Prefer focused fixture coverage over broad, brittle snapshots.
+
+## Core Test Areas
+
+- Repository detection: files, manifests, package managers, scripts, Git, languages, and frameworks.
+- Readiness analysis: found items, missing items, recommendations, and score.
+- Generation: deterministic content, safe write behavior, and no secret leakage.
+- CLI presentation: clear wording, stable formatting, no invented commands.
+- Root handling: commands work against the requested repository root.
 
 ## Output Format
 
@@ -39,7 +50,8 @@ Provide:
 
 ## Done Criteria
 
-- Critical paths are verified.
+- Critical CLI paths are verified.
+- Safety guarantees are checked for affected commands.
 - Failures include clear evidence.
 - Blockers are explicit.
 - The release decision is supported by test results.

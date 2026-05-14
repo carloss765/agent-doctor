@@ -1,750 +1,267 @@
-# Agent Doctor
+<p align="center">
+  <img src="./landing/public/favicon.svg" alt="Agent Doctor favicon" width="72" height="72" />
+</p>
 
-## Idea general
+<h1 align="center">AGENT DOCTOR</h1>
 
-**Agent Doctor** es una CLI open source que analiza si un proyecto está listo para trabajar con agentes de código como Claude Code, Codex, OpenCode, Cursor, Windsurf u otros.
+<p align="center">
+  Diagnose whether a repository is ready for AI coding agents.
+</p>
 
-La herramienta no proporciona un modelo de IA propio. En lugar de eso, funciona como una capa de diagnóstico y preparación del repositorio:
+<p align="center">
+  <a href="https://github.com/carloss765/agent-doctor">Repository</a>
+  ·
+  <a href="./docs/technical-decisions.md">Technical decisions</a>
+  ·
+  <a href="./docs/publishing.md">Publishing</a>
+</p>
+
+---
+
+## What It Is
+
+Agent Doctor is an open source Node.js CLI that checks whether a project has the context,
+commands, safety files, and setup signals that coding agents need before they start changing code.
+
+It does not provide an AI model and does not call any hosted AI service. It prepares your repository
+for the agent you already use, such as Codex, Claude Code, OpenCode, Cursor, Windsurf, or another
+tool that can read files in your project.
 
 ```text
-agent-doctor = scanner + generator + prompt builder
-user's agent = executor
+agent-doctor = scanner + generator + prescription builder
+your coding agent = executor
 ```
 
-Es decir, Agent Doctor detecta qué tiene y qué le falta al proyecto, genera archivos base y produce instrucciones claras para que el agente del usuario pueda completar las mejoras necesarias.
+## Why Use It
 
----
+Coding agents work better when a repository tells them what matters. Many projects are missing that
+context:
 
-## Problema
+- `AGENTS.md` with project-specific instructions
+- documented `dev`, `build`, `test`, `lint`, and `format` commands
+- `.env.example` with safe placeholders
+- clear safety rules for secrets and destructive commands
+- a simple readiness summary before delegating work
 
-Los agentes de código funcionan mejor cuando el repositorio tiene contexto claro, comandos confiables y reglas explícitas. Sin embargo, muchos proyectos nuevos o pequeños no tienen:
+Agent Doctor finds those gaps and gives you a concrete next step instead of making your coding agent
+guess.
 
-* `AGENTS.md`
-* README completo
-* instrucciones de instalación
-* comandos de desarrollo, build, lint o test documentados
-* `.env.example`
-* reglas de seguridad para agentes
-* resumen de arquitectura
-* contexto de carpetas principales
-* configuración para herramientas como OpenCode o Claude Code
+## What It Checks
 
-Como resultado, el agente debe adivinar demasiado, puede cometer errores, modificar archivos sensibles o trabajar con poco contexto.
+The current version focuses on Node.js and TypeScript projects. It scans for:
 
----
+- repository basics: Git, manifests, package manager, lockfile
+- context files: `README.md`, `AGENTS.md`, `.env.example`
+- scripts: `dev`, `build`, `test`, `lint`, `format`
+- agent tooling signals: Codex, Claude Code, OpenCode, Cursor, Windsurf
+- local skills under `.agents/skills`
+- readiness score, status, and recommended next steps
 
-## Solución
+## Install
 
-Agent Doctor revisa el proyecto y responde una pregunta simple:
-
-> ¿Este repositorio está listo para ser trabajado por un agente de código?
-
-Luego entrega:
-
-1. Un diagnóstico del estado actual del proyecto.
-2. Una lista clara de lo que falta.
-3. Archivos base generados con templates seguros.
-4. Prompts específicos para que el agente del usuario implemente las mejoras.
-
----
-
-## Principio clave
-
-Agent Doctor **no ejecuta IA por sí mismo** en el MVP.
-
-No requiere:
-
-* API keys
-* cuenta de OpenAI
-* cuenta de Anthropic
-* proveedor de modelos
-* costos por tokens
-* acceso externo al código del usuario
-
-El usuario usa su propio agente, por ejemplo:
-
-* Claude Code
-* Codex
-* OpenCode
-* Cursor
-* Windsurf
-* cualquier agente que pueda leer archivos del repo
-
-Agent Doctor solo genera el diagnóstico y la “receta” para ese agente.
-
----
-
-## Comandos propuestos
-
-### Modo interactivo
+Run it directly with `npx`:
 
 ```bash
-npx agent-doctor
+npx @carloss765/agent-doctor scan
 ```
 
-Escanea el proyecto y muestra un menú interactivo.
+The public package uses the scoped name `@carloss765/agent-doctor`.
 
-Ejemplo:
-
-```text
-🩺 Agent Doctor
-
-Scanning your repository...
-
-Project detected:
-  Framework: Next.js
-  Package manager: pnpm
-  Language: TypeScript
-  Git: enabled
-
-Agent readiness score: 42/100
-
-Found:
-  ✅ README.md
-  ✅ package.json
-  ✅ dev script: pnpm dev
-  ✅ build script: pnpm build
-
-Missing:
-  ⚠️ AGENTS.md
-  ⚠️ test script
-  ⚠️ lint script
-  ⚠️ .env.example
-  ⚠️ agent safety rules
-  ⚠️ architecture context
-  ⚠️ OpenCode config
-  ⚠️ Claude Code instructions
-
-What would you like to do?
-
-  1. Generate missing base files
-  2. Generate only AGENTS.md
-  3. Generate OpenCode setup
-  4. Generate Claude Code setup
-  5. Create a prompt for my agent
-  6. Export report only
-  7. Exit
-```
-
----
-
-### `scan`
-
-```bash
-npx agent-doctor scan
-```
-
-Solo revisa el proyecto. No modifica archivos.
-
-Sirve para responder:
-
-> ¿Qué tengo y qué me falta?
-
-Ejemplo:
-
-```text
-Agent readiness score: 45/100
-
-✅ README.md found
-✅ package.json found
-✅ dev script found: pnpm dev
-✅ build script found: pnpm build
-⚠️ missing AGENTS.md
-⚠️ missing .env.example
-⚠️ missing test script
-⚠️ missing architecture context
-⚠️ missing agent safety rules
-```
-
----
-
-### `init`
-
-```bash
-npx agent-doctor init
-```
-
-Genera archivos base usando templates. No necesita IA.
-
-Posibles archivos generados:
-
-```text
-AGENTS.md
-.agent-doctor/report.md
-.agent-doctor/report.json
-.agent-doctor/context.md
-.agent-doctor/safety.md
-.agent-doctor/prescription.md
-```
-
-Opcionalmente, según el agente elegido:
-
-```text
-opencode.jsonc
-CLAUDE.md
-.claude/commands/doctor.md
-```
-
----
-
-### `prescribe`
-
-```bash
-npx agent-doctor prescribe
-```
-
-Genera una “receta” o prompt para que el agente del usuario implemente lo que falta.
-
-Este comando es más claro que `fix`, porque Agent Doctor no arregla todo directamente. En su lugar, prepara instrucciones para el agente.
-
-Ejemplo:
-
-```text
-Prescription created:
-
-.agent-doctor/prescription.md
-
-Give this to your coding agent:
-
-"Read .agent-doctor/prescription.md and apply the recommended repository setup fixes."
-```
-
----
-
-### Alias opcionales
-
-```bash
-npx agent-doctor doctor     # alias de scan
-npx agent-doctor fix        # alias de prescribe
-npx agent-doctor prompt     # alias de prescribe
-```
-
----
-
-## Flujo principal de uso
-
-### 1. Diagnosticar
-
-```bash
-npx agent-doctor scan
-```
-
-El usuario ve qué tiene y qué le falta al proyecto.
-
-### 2. Inicializar
-
-```bash
-npx agent-doctor init
-```
-
-Agent Doctor crea archivos base con templates seguros.
-
-### 3. Preparar instrucciones para el agente
-
-```bash
-npx agent-doctor prescribe --agent opencode
-```
-
-Agent Doctor crea un prompt específico para OpenCode.
-
-### 4. Delegar al agente del usuario
-
-El usuario abre su agente y le dice:
-
-```text
-Read .agent-doctor/prescription.opencode.md and apply the recommended fixes.
-```
-
----
-
-## Integraciones por agente
-
-### Universal
-
-Genera instrucciones genéricas que cualquier agente puede leer.
-
-Archivos:
-
-```text
-AGENTS.md
-.agent-doctor/prescription.md
-```
-
----
-
-### Codex
-
-Codex puede usar `AGENTS.md` como archivo de instrucciones del proyecto.
-
-Comando:
-
-```bash
-npx agent-doctor prescribe --agent codex
-```
-
-Genera:
-
-```text
-AGENTS.md
-.agent-doctor/prescription.codex.md
-```
-
----
-
-### Claude Code
-
-Comando:
-
-```bash
-npx agent-doctor prescribe --agent claude
-```
-
-Genera:
-
-```text
-CLAUDE.md
-.claude/commands/doctor.md
-.agent-doctor/prescription.claude.md
-```
-
-La instrucción para el usuario podría ser:
-
-```text
-Open Claude Code and run the doctor command, or ask Claude to read .agent-doctor/prescription.claude.md.
-```
-
----
-
-### OpenCode
-
-Comando:
-
-```bash
-npx agent-doctor prescribe --agent opencode
-```
-
-Genera:
-
-```text
-AGENTS.md
-opencode.jsonc
-.agent-doctor/prescription.opencode.md
-```
-
-Posible idea:
-
-```jsonc
-{
-  "$schema": "https://opencode.ai/config.json",
-  "instructions": [
-    "AGENTS.md",
-    ".agent-doctor/context.md"
-  ],
-  "agent": {
-    "repo-doctor": {
-      "description": "Repairs missing project setup, documentation, safety rules, and agent-readiness files.",
-      "prompt": "Read .agent-doctor/prescription.opencode.md and implement the recommended repository readiness fixes."
-    }
-  }
-}
-```
-
----
-
-## Qué debería revisar Agent Doctor
-
-### Project basics
-
-* Existe `README.md`
-* Existe `package.json`, `pyproject.toml`, `Cargo.toml`, etc.
-* Detecta package manager
-* Detecta lenguaje principal
-* Detecta framework
-* Detecta Git
-* Detecta scripts importantes
-
-Ejemplo para proyectos Node.js:
-
-* `dev`
-* `build`
-* `test`
-* `lint`
-* `format`
-
----
-
-### Agent readiness
-
-* Existe `AGENTS.md`
-* Existe `CLAUDE.md`, opcional
-* Existe `opencode.jsonc`, opcional
-* Las instrucciones de setup están claras
-* Los comandos están documentados
-* Hay reglas para cambios seguros
-* Hay contexto del proyecto
-
----
-
-### Safety
-
-* Hay `.env.example`
-* `.env` está protegido en `.gitignore`
-* Hay reglas para no modificar secretos
-* Hay reglas sobre migraciones de base de datos
-* Hay reglas sobre comandos destructivos
-* Hay advertencias para autenticación, pagos, permisos y producción
-
-Ejemplo de reglas:
-
-```md
-## Safety rules for agents
-
-- Never modify `.env`, `.env.*`, private keys, tokens, or credentials.
-- Do not run destructive commands such as `rm -rf`, database resets, or production migrations.
-- Ask before changing authentication, payments, permissions, or database schema.
-- Prefer small, reviewable changes.
-- Summarize every file changed after completing work.
-```
-
----
-
-### Repo context
-
-* Hay resumen de arquitectura
-* Las carpetas principales están explicadas
-* La capa de datos está identificada
-* Las rutas/API están documentadas
-* La estrategia de testing está descrita
-* Los comandos de validación están claros
-
----
-
-### DX quality
-
-* Existe `.editorconfig`
-* Existe formatter
-* Existe linter
-* Existe CI
-* Existe `.gitignore`
-* Existe `CONTRIBUTING.md`, opcional
-* Existen templates de issues o PRs, opcional
-
----
-
-## Archivos generados por el MVP
-
-Primera versión recomendada:
-
-```text
-AGENTS.md
-.agent-doctor/report.md
-.agent-doctor/report.json
-.agent-doctor/context.md
-.agent-doctor/prescription.md
-```
-
-Opcionales:
-
-```text
-CLAUDE.md
-opencode.jsonc
-.claude/commands/doctor.md
-```
-
----
-
-## Ejemplo de `AGENTS.md` generado
-
-```md
-# AGENTS.md
-
-## Project overview
-
-This project appears to be a Node.js/TypeScript project.
-
-## Commands
-
-- Install: `pnpm install`
-- Dev: `pnpm dev`
-- Build: `pnpm build`
-- Test: not detected
-- Lint: not detected
-
-## Project structure
-
-- `src/`: main application source code
-- `public/`: static assets, if present
-- `tests/`: test files, if present
-
-## Agent rules
-
-- Do not edit `.env` or credential files.
-- Do not change business logic unless explicitly requested.
-- Prefer small, reviewable changes.
-- Run available validation commands after making changes.
-- Summarize every file changed.
-```
-
----
-
-## Ejemplo de prescription generada
-
-```md
-# Agent Doctor Prescription
-
-You are working inside this repository.
-
-Read these files first:
-
-- `.agent-doctor/report.md`
-- `package.json`
-- `README.md`
-- `AGENTS.md` if it exists
-
-The repository is missing:
-
-- AGENTS.md
-- .env.example
-- test script
-- architecture summary
-- agent safety rules
-
-Your task:
-
-1. Create or improve `AGENTS.md`.
-2. Add a basic `.env.example` if environment variables are referenced.
-3. Add missing setup instructions to `README.md`.
-4. Create `.agent-doctor/context.md` explaining the project structure.
-5. Add safety rules for AI coding agents.
-6. Do not modify application business logic.
-7. Do not add dependencies unless necessary.
-8. Run available validation commands after changes.
-
-When finished, summarize:
-
-- files changed
-- what was added
-- commands run
-- remaining issues
-```
-
----
-
-## MVP recomendado
-
-### v0.1
-
-Enfocarse solo en proyectos Node.js/TypeScript.
-
-Checks:
-
-* `README.md`
-* `package.json`
-* package manager
-* scripts `dev`, `build`, `test`, `lint`
-* `AGENTS.md`
-* `.env.example`
-* `.gitignore`
-* estructura básica del proyecto
-
-Comandos:
-
-```bash
-npx agent-doctor
-npx agent-doctor scan
-npx agent-doctor init
-npx agent-doctor prescribe
-```
-
-Generadores:
-
-* `AGENTS.md`
-* `.agent-doctor/report.md`
-* `.agent-doctor/report.json`
-* `.agent-doctor/context.md`
-* `.agent-doctor/prescription.md`
-
----
-
-## Roadmap
-
-### v0.1
-
-* Scanner para Node.js
-* Detección de npm, pnpm, yarn y bun
-* Detección de scripts
-* Generador de `AGENTS.md`
-* Generador de reportes
-* Generador de prescription universal
-
-### v0.2
-
-* Adaptador para OpenCode
-* Generador de `opencode.jsonc`
-* Prescription específica para OpenCode
-* Agente `repo-doctor` configurable en OpenCode
-
-### v0.3
-
-* Adaptador para Claude Code
-* Generador de `CLAUDE.md`
-* Generador de `.claude/commands/doctor.md`
-* Prescription específica para Claude Code
-
-### v0.4
-
-* Soporte para Python
-* Soporte para Rust
-* Soporte para Go
-* Detección de CI
-* Detección de estrategia de testing
-
-### v0.5
-
-* Modo interactivo avanzado
-* Score badges
-* GitHub Action
-* Reporte JSON estable para CI
-
----
-
-## Posible stack técnico
-
-Recomendación inicial: TypeScript.
-
-Dependencias posibles:
-
-```text
-TypeScript
-Node.js
-pnpm
-commander o cac
-picocolors
-zod
-fast-glob
-execa
-prompts
-```
-
-Estructura sugerida:
-
-```text
-src/
-  cli.ts
-  scanners/
-    node.ts
-    git.ts
-    readme.ts
-    env.ts
-    agents.ts
-    ci.ts
-  generators/
-    agents-md.ts
-    opencode.ts
-    claude.ts
-    report.ts
-    prescription.ts
-  adapters/
-    codex.ts
-    opencode.ts
-    claude.ts
-  rules/
-    index.ts
-  types.ts
-```
-
----
-
-## Diferencial
-
-Agent Doctor no es un linter de código.
-
-Es un linter de contexto para agentes.
-
-Su promesa:
-
-> Your AI coding agent is only as good as your repo context. Agent Doctor finds what your repo forgot to tell it.
-
----
-
-## Frase corta del proyecto
-
-```text
-Agent Doctor helps new projects become safe, understandable, and ready for AI coding agents.
-```
-
----
-
-## README pitch
-
-```md
-# Agent Doctor
-
-Agent Doctor is a CLI that diagnoses and prepares your repository for AI coding agents.
-
-It scans your project, detects missing setup and context files, generates safe starter templates, and creates precise prompts for your own coding agent.
-
-Agent Doctor does not provide an AI model.
-It works with the agent you already use: Claude Code, Codex, OpenCode, Cursor, Windsurf, or any agent that can read files in your repository.
-```
-
----
-
-## Visión
-
-Agent Doctor puede convertirse en una herramienta estándar para proyectos nuevos:
-
-```bash
-mkdir my-app
-cd my-app
-npm init -y
-npx agent-doctor init
-```
-
-Así como muchos proyectos tienen linters, formatters y checkers de salud, Agent Doctor busca convertirse en el checker de preparación para agentes de código.
-
----
-
-## Estado de implementación
-
-El proyecto ya incluye un scaffold inicial de CLI en TypeScript y el comando read-only `scan`.
-
-Comandos de desarrollo:
+For local development:
 
 ```bash
 pnpm install
-pnpm dev
-pnpm dev -- scan
 pnpm build
-pnpm test
-pnpm lint
-pnpm format:check
-pnpm check
+pnpm dev -- scan
 ```
 
-El comando `scan` revisa señales iniciales del repositorio sin crear, modificar ni eliminar archivos.
+## Commands
 
-Estado actual:
+### `scan`
 
-- Milestone 1: scaffold CLI, scripts, tests, build y CI.
-- Milestone 2: scanner estructurado con archivos base, Git, lockfile y scripts Node.
-- Milestone 3: analyzer con readiness score, status y next steps.
-- Milestone 4: comando `init` para crear `AGENTS.md` y `.env.example` faltantes sin sobrescribir archivos existentes.
-- Milestone 5: presentación CLI con color opcional y salida compacta para `scan`.
-- Milestone 6: comando `prescribe` para generar `.agent-doctor/prescription.md` sin sobrescribir.
-
-Uso local:
+Scans the repository without modifying files.
 
 ```bash
-pnpm dev          # default: scan read-only
+npx @carloss765/agent-doctor scan
+```
+
+Useful when you want to know what the repo already has and what is missing.
+
+You can scan another directory with `--root`:
+
+```bash
+npx @carloss765/agent-doctor scan --root ./path/to/project
+```
+
+### `init`
+
+Creates safe starter files without overwriting existing files.
+
+```bash
+npx @carloss765/agent-doctor init
+```
+
+Currently generated files:
+
+- `AGENTS.md`
+- `.env.example`
+
+If either file already exists, Agent Doctor skips it.
+
+### `prescribe`
+
+Creates a prescription file for your coding agent.
+
+```bash
+npx @carloss765/agent-doctor prescribe
+```
+
+Generated file:
+
+- `.agent-doctor/prescription.md`
+
+Give that file to your coding agent and ask it to apply the recommended repository setup fixes.
+
+## Suggested Workflow
+
+1. Diagnose the project:
+
+```bash
+npx @carloss765/agent-doctor scan
+```
+
+2. Generate missing base files:
+
+```bash
+npx @carloss765/agent-doctor init
+```
+
+3. Create instructions for your coding agent:
+
+```bash
+npx @carloss765/agent-doctor prescribe
+```
+
+4. Ask your agent to read the prescription:
+
+```text
+Read .agent-doctor/prescription.md and apply the recommended repository setup fixes.
+Do not modify secrets or run destructive commands.
+```
+
+5. Re-scan after changes:
+
+```bash
+npx @carloss765/agent-doctor scan
+```
+
+## Commands To Test The Tool
+
+From this repository:
+
+```bash
+pnpm install
 pnpm dev -- scan
 pnpm dev -- init --yes
 pnpm dev -- prescribe --yes
+pnpm test
+pnpm build
+pnpm lint
+pnpm check
 ```
 
-Public npm usage should use the scoped package name because `agent-doctor` is already occupied on npm:
+After building, you can test the compiled CLI:
 
 ```bash
-npx @carloss765/agent-doctor
-npx @carloss765/agent-doctor scan
+pnpm build
+node dist/cli.js scan
+node dist/cli.js init --yes
+node dist/cli.js prescribe --yes
 ```
+
+To test against a temporary project:
+
+```bash
+mkdir /tmp/agent-doctor-demo
+cd /tmp/agent-doctor-demo
+pnpm init
+node /path/to/agent-doctor/dist/cli.js scan
+node /path/to/agent-doctor/dist/cli.js init --yes
+node /path/to/agent-doctor/dist/cli.js prescribe --yes
+```
+
+Replace `/path/to/agent-doctor` with the absolute path to this repository.
+
+## Development
+
+Main commands:
+
+```bash
+pnpm dev          # default scan
+pnpm dev -- scan
+pnpm dev -- init --yes
+pnpm dev -- prescribe --yes
+pnpm test
+pnpm lint
+pnpm build
+pnpm check
+pnpm format
+```
+
+Landing page:
+
+```bash
+pnpm --dir landing dev
+pnpm --dir landing build
+pnpm --dir landing preview
+```
+
+## Project Structure
+
+```text
+src/
+  analyzer/      readiness scoring and next steps
+  cli/           command output, parsing, presentation helpers
+  generator/     AGENTS.md, .env.example, and prescription generation
+  scanner/       repository inspection
+tests/           Vitest coverage
+docs/            technical and publishing notes
+landing/         Astro landing page
+.agents/         project agent roles, messages, and workflows
+```
+
+## Safety Model
+
+Agent Doctor is intentionally conservative:
+
+- `scan` is read-only.
+- `init` does not overwrite existing files.
+- `prescribe` does not overwrite an existing prescription.
+- no API keys are required.
+- no model provider account is required.
+- generated instructions warn agents not to modify secrets or run destructive commands.
+
+## Current Status
+
+Implemented:
+
+- TypeScript CLI scaffold
+- `scan`, `init`, and `prescribe` commands
+- readiness analyzer and score
+- Node.js project signal detection
+- package manager and script detection
+- agent tool and skill detection
+- Vitest test suite
+- Astro landing page
+
+Planned:
+
+- richer framework detection
+- stable JSON report output
+- CI-friendly mode
+- adapter-specific prescriptions for Codex, Claude Code, and OpenCode
+- broader language support beyond Node.js
+
+## License
+
+MIT. See [LICENSE](./LICENSE).
