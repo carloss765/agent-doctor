@@ -5,7 +5,7 @@
 Publish Agent Ready as a public npm package so users can run:
 
 ```bash
-npx agent-ready
+npx @agent-ready/cli
 ```
 
 ## Requirements
@@ -22,11 +22,10 @@ pnpm install
 pnpm check
 pnpm format:check
 pnpm pack:dry-run
-npm view agent-ready
+npm view @agent-ready/cli
 ```
 
-The unscoped `agent-ready` package name must return `404` before the first publish. If it returns
-package metadata, stop and choose another name.
+The scoped `@agent-ready/cli` package must return `404` before the first publish. If it returns package metadata, stop and confirm package ownership.
 
 ## Publish
 
@@ -40,10 +39,10 @@ npm publish --access public
 After publishing:
 
 ```bash
-npx agent-ready
-npx agent-ready scan
-npx agent-ready init --yes
-npx agent-ready prescribe --yes
+npx @agent-ready/cli
+npx @agent-ready/cli scan
+npx @agent-ready/cli init --yes
+npx @agent-ready/cli prescribe --yes
 ```
 
 ## Safety Notes

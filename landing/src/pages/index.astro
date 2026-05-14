@@ -46,11 +46,11 @@ import "../styles/global.css";
           </p>
           <div class="hero-command" role="group" aria-label="Command to run Agent Ready">
             <span>$</span>
-            <code id="hero-command-text">npx agent-ready scan</code>
+            <code id="hero-command-text">npx @agent-ready/cli scan</code>
             <button
               class="copy-button"
               type="button"
-              data-copy-command="npx agent-ready scan"
+              data-copy-command="npx @agent-ready/cli scan"
               aria-describedby="copy-status"
             >
               Copy
@@ -68,7 +68,7 @@ import "../styles/global.css";
             <span class="window-control window-minimize"></span>
             <span class="window-control window-maximize"></span>
           </div>
-          <pre><code><span class="terminal-muted">$</span> npx agent-ready scan
+          <pre><code><span class="terminal-muted">$</span> npx @agent-ready/cli scan
 <span class="terminal-muted">.. Scanning repository...</span>
 
 Agent readiness
@@ -112,32 +112,32 @@ Next steps
         </div>
         <div class="run-demo" aria-label="Animated command run preview">
           <canvas id="command-canvas" aria-hidden="true"></canvas>
-          <pre class="run-demo-fallback" aria-hidden="true"><code><span class="terminal-muted">$</span> npx agent-ready scan
+          <pre class="run-demo-fallback" aria-hidden="true"><code><span class="terminal-muted">$</span> npx @agent-ready/cli scan
 <span class="terminal-muted">.. Scanning repository...</span>
 <span class="terminal-ok">✓ README.md found</span>
 <span class="terminal-ok">✓ package.json found</span>
 <span class="terminal-danger">✕ AGENTS.md missing</span>
 
-<span class="terminal-muted">$</span> npx agent-ready init
+<span class="terminal-muted">$</span> npx @agent-ready/cli init
 <span class="terminal-ok">✓ Created AGENTS.md</span>
 <span class="terminal-ok">✓ Created .env.example</span>
 
-<span class="terminal-muted">$</span> npx agent-ready prescribe
+<span class="terminal-muted">$</span> npx @agent-ready/cli prescribe
 <span class="terminal-ok">✓ Created .agent-ready/prescription.md</span></code></pre>
         </div>
         <div class="command-grid">
           <article>
-            <code>npx agent-ready scan</code>
+            <code>npx @agent-ready/cli scan</code>
             <h3>Diagnose readiness</h3>
             <p>Scores the repository and reports missing files, scripts, agent tools, and skills.</p>
           </article>
           <article>
-            <code>npx agent-ready init</code>
+            <code>npx @agent-ready/cli init</code>
             <h3>Create safe base files</h3>
             <p>Adds missing Agent Ready starter files without overwriting existing project files.</p>
           </article>
           <article>
-            <code>npx agent-ready prescribe</code>
+            <code>npx @agent-ready/cli prescribe</code>
             <h3>Generate the agent brief</h3>
             <p>Writes a focused prescription your coding agent can follow on the next run.</p>
           </article>
@@ -235,7 +235,7 @@ Prescription
           <h2 id="install-title">Run it from any repository.</h2>
         </div>
         <div class="command-row">
-          <code>npx agent-ready scan</code>
+          <code>npx @agent-ready/cli scan</code>
           <a class="button button-primary" href="https://github.com/carloss765/agent-ready">
             View GitHub
           </a>
