@@ -1,0 +1,176 @@
+---
+import "../styles/global.css";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Agent Doctor checks whether a repository is ready for coding agents."
+    />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>Agent Doctor</title>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="Agent Doctor home">
+        <span class="brand-mark" aria-hidden="true"></span>
+        Agent Doctor
+      </a>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="#workflow">Workflow</a>
+        <a href="#checks">Checks</a>
+        <a href="#install">Install</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-labelledby="hero-title">
+        <canvas id="ascii-canvas" aria-hidden="true"></canvas>
+        <div class="hero-content">
+          <p class="eyebrow">Repository readiness for coding agents</p>
+          <h1 id="hero-title">Agent Doctor</h1>
+          <p class="hero-lede">
+            Check whether a project has the context, commands, safety files, and agent tooling it
+            needs before you delegate work to Codex, Claude Code, OpenCode, Cursor, or Windsurf.
+          </p>
+          <div class="hero-actions" aria-label="Primary actions">
+            <a class="button button-primary" href="#install">Run the CLI</a>
+            <a class="button button-secondary" href="#preview">See output</a>
+          </div>
+        </div>
+        <div class="hero-terminal" id="preview" aria-label="Agent Doctor scan output preview">
+          <div class="terminal-top" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <pre><code>$ npx agent-doctor scan
+.. Scanning repository...
+
+Agent readiness
+  Score: 100/100 ██████████
+  Status: Ready
+
+Tool use
+  ✓ Codex: ready AGENTS.md, .agents
+  - Claude Code: missing
+  - OpenCode: missing
+
+Next steps
+  - This repository is ready for coding agents.</code></pre>
+        </div>
+      </section>
+
+      <section class="principles" aria-label="MVP principles">
+        <div>
+          <strong>No API keys</strong>
+          <span>Agent Doctor runs locally and does not call a model provider.</span>
+        </div>
+        <div>
+          <strong>No risky fixes</strong>
+          <span>It diagnoses, writes safe base files, and creates a prescription.</span>
+        </div>
+        <div>
+          <strong>Your agent executes</strong>
+          <span>Use the generated instructions with the coding agent you already trust.</span>
+        </div>
+      </section>
+
+      <section class="section section-split" id="workflow">
+        <div class="section-heading">
+          <p class="eyebrow">Workflow</p>
+          <h2>Diagnose, initialize, prescribe.</h2>
+        </div>
+        <ol class="workflow-list">
+          <li>
+            <span>scan</span>
+            <p>Read the repository and score its readiness without modifying files.</p>
+          </li>
+          <li>
+            <span>init</span>
+            <p>Create missing base files such as AGENTS.md and .env.example without overwrites.</p>
+          </li>
+          <li>
+            <span>prescribe</span>
+            <p>Generate a focused prompt that tells your coding agent what to fix next.</p>
+          </li>
+        </ol>
+      </section>
+
+      <section class="section" id="checks">
+        <div class="section-heading">
+          <p class="eyebrow">Checks</p>
+          <h2>Signals that reduce agent guesswork.</h2>
+        </div>
+        <div class="check-grid">
+          <article>
+            <span>01</span>
+            <h3>Context</h3>
+            <p>README, AGENTS.md, architecture notes, safety rules, and environment examples.</p>
+          </article>
+          <article>
+            <span>02</span>
+            <h3>Commands</h3>
+            <p>Development, build, test, lint, and format scripts that make verification clear.</p>
+          </article>
+          <article>
+            <span>03</span>
+            <h3>Agent tools</h3>
+            <p>Codex, Claude Code, OpenCode, Cursor, Windsurf, and local skill directories.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section proof-section">
+        <div class="section-heading">
+          <p class="eyebrow">Output</p>
+          <h2>A copyable diagnosis for the next agent run.</h2>
+        </div>
+        <div class="output-grid">
+          <pre><code>Found
+  ✓ README.md
+  ✓ package.json
+  ✓ Git repository
+
+Missing
+  - AGENTS.md
+  - .env.example
+  - test script
+
+Prescription
+  .agent-doctor/prescription.md</code></pre>
+          <p>
+            Agent Doctor does not pretend to be the agent. It prepares the repo so the next agent
+            has fewer assumptions to make and a clear verification path to follow.
+          </p>
+        </div>
+      </section>
+
+      <section class="install" id="install" aria-labelledby="install-title">
+        <div>
+          <p class="eyebrow">Install</p>
+          <h2 id="install-title">Run it from any repository.</h2>
+        </div>
+        <div class="command-row">
+          <code>npx agent-doctor scan</code>
+          <a class="button button-primary" href="https://github.com/carloss765/agent-doctor">
+            View GitHub
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>Agent Doctor</span>
+      <span>Open source repository readiness for coding agents.</span>
+    </footer>
+
+    <script>
+      import "../scripts/ascii-canvas";
+    </script>
+  </body>
+</html>

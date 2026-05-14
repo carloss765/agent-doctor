@@ -5,7 +5,7 @@ import { formatInitResult } from "./cli/formatInitResult.js";
 import { formatPrescribeResult } from "./cli/formatPrescribeResult.js";
 import { formatScanResult } from "./cli/formatScanResult.js";
 import { parseRootOption } from "./cli/parseRootOption.js";
-import { progress, shouldUseColor } from "./cli/presentation.js";
+import { shouldUseColor, withProgress } from "./cli/presentation.js";
 import { initProject } from "./generator/initProject.js";
 import { prescribeProject } from "./generator/prescribeProject.js";
 import { scanRepository } from "./scanner/scanRepository.js";
@@ -36,10 +36,13 @@ program
   .option("--yes", "Run non-interactively.")
   .action(async () => {
     try {
-      console.error(progress("Generating prescription..."));
-      const scan = await scanRepository(getRootOption());
-      const result = await prescribeProject(scan);
-      console.log(formatPrescribeResult(result, { color: shouldUseColor() }));
+      const color = shouldUseColor();
+      const result = await withProgress(
+        "Generating prescription...",
+        async () => prescribeProject(await scanRepository(getRootOption())),
+        { color }
+      );
+      console.log(formatPrescribeResult(result, { color }));
     } catch (error) {
       const message = error instanceof Error ? error.message : "Unknown error";
       console.error(
@@ -65,10 +68,13 @@ program
   .option("--yes", "Run non-interactively.")
   .action(async () => {
     try {
-      console.error(progress("Preparing base files..."));
-      const scan = await scanRepository(getRootOption());
-      const result = await initProject(scan);
-      console.log(formatInitResult(result, { color: shouldUseColor() }));
+      const color = shouldUseColor();
+      const result = await withProgress(
+        "Preparing base files...",
+        async () => initProject(await scanRepository(getRootOption())),
+        { color }
+      );
+      console.log(formatInitResult(result, { color }));
     } catch (error) {
       const message = error instanceof Error ? error.message : "Unknown error";
       console.error(
@@ -95,9 +101,11 @@ program.parseAsync(process.argv).catch((error: unknown) => {
 
 async function runScan(root: string): Promise<void> {
   try {
-    console.error(progress("Scanning repository..."));
-    const result = await scanRepository(root);
-    console.log(formatScanResult(result, { color: shouldUseColor() }));
+    const color = shouldUseColor();
+    const result = await withProgress("Scanning repository...", async () => scanRepository(root), {
+      color
+    });
+    console.log(formatScanResult(result, { color }));
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unknown error";
     console.error(
