@@ -713,6 +713,7 @@ Comandos de desarrollo:
 
 ```bash
 pnpm install
+pnpm dev
 pnpm dev -- scan
 pnpm build
 pnpm test
@@ -731,3 +732,12 @@ Estado actual:
 - Milestone 4: comando `init` para crear `AGENTS.md` y `.env.example` faltantes sin sobrescribir archivos existentes.
 - Milestone 5: presentación CLI con color opcional y salida compacta para `scan`.
 - Milestone 6: comando `prescribe` para generar `.agent-doctor/prescription.md` sin sobrescribir.
+
+Uso local:
+
+```bash
+pnpm dev          # default: scan read-only
+pnpm dev -- scan
+pnpm dev -- init --yes
+pnpm dev -- prescribe --yes
+```
