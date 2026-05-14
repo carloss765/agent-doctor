@@ -39,17 +39,17 @@ Technology choices should be evaluated using these criteria:
 
 ## Approved Technology Stack
 
-| Area | Decision | Rationale |
-| --- | --- | --- |
-| Language | TypeScript | Strong typing improves maintainability and helps agents reason about code safely. |
-| Runtime | Node.js | Best fit for an npm-distributed CLI. |
-| Package manager | pnpm | Fast installs, strict dependency behavior, and good monorepo support if needed later. |
-| CLI framework | Commander or CAC | Both are simple, mature options for CLI commands and flags. Final choice should happen during implementation. |
-| Testing | Vitest | Fast test runner with good TypeScript support. |
-| Formatting | Prettier | Keeps formatting consistent with minimal discussion. |
-| Linting | ESLint | Catches common TypeScript and JavaScript issues. |
-| Distribution | npm package | Matches the expected usage: `npx agent-doctor`. |
-| CI | GitHub Actions | Standard choice for open source validation and release checks. |
+| Area            | Decision       | Rationale                                                                             |
+| --------------- | -------------- | ------------------------------------------------------------------------------------- |
+| Language        | TypeScript     | Strong typing improves maintainability and helps agents reason about code safely.     |
+| Runtime         | Node.js        | Best fit for an npm-distributed CLI.                                                  |
+| Package manager | pnpm           | Fast installs, strict dependency behavior, and good monorepo support if needed later. |
+| CLI framework   | Commander      | Simple, mature, and enough for `scan`, `init`, and `prescribe`.                       |
+| Testing         | Vitest         | Fast test runner with good TypeScript support.                                        |
+| Formatting      | Prettier       | Keeps formatting consistent with minimal discussion.                                  |
+| Linting         | ESLint         | Catches common TypeScript and JavaScript issues.                                      |
+| Distribution    | npm package    | Matches the expected usage: `npx agent-doctor`.                                       |
+| CI              | GitHub Actions | Standard choice for open source validation and release checks.                        |
 
 ## Initial Recommendation
 
@@ -59,7 +59,7 @@ Start with:
 TypeScript
 Node.js
 pnpm
-Commander or CAC
+Commander
 Vitest
 Prettier
 ESLint
@@ -68,6 +68,8 @@ npm package distribution
 ```
 
 Avoid adding frameworks, databases, hosted services, or AI provider SDKs in the MVP.
+
+Milestone 1 uses Commander and ESM package output.
 
 ## Architecture Direction
 
@@ -116,16 +118,23 @@ Each pull request should include:
 - Validation commands run.
 - Any known limitations or follow-up work.
 
+## Decisions Closed In Milestone 1
+
+| Decision      | Outcome        | Rationale                                                           |
+| ------------- | -------------- | ------------------------------------------------------------------- |
+| CLI framework | Commander      | Simple API, mature package, and enough for the expected commands.   |
+| Package type  | ESM            | Fits modern Node.js and keeps imports explicit with `NodeNext`.     |
+| CI timing     | Milestone 1    | Small workflow protects the scaffold from the beginning.            |
+| Build tool    | TypeScript CLI | Avoids an extra bundler dependency while the package remains small. |
+
 ## Open Decisions
 
 These decisions should be finalized before or during the first implementation increment:
 
-| Decision | Options | Notes |
-| --- | --- | --- |
-| CLI framework | Commander, CAC | Choose the simpler fit after scaffolding a small command. |
-| Package type | ESM, CommonJS | Prefer ESM unless tooling or distribution creates friction. |
-| Template format | Markdown files, embedded strings | Prefer file-based templates if they stay easy to test. |
-| Release flow | Manual npm publish, automated release | Manual is acceptable for MVP. |
+| Decision        | Options                               | Notes                                                  |
+| --------------- | ------------------------------------- | ------------------------------------------------------ |
+| Template format | Markdown files, embedded strings      | Prefer file-based templates if they stay easy to test. |
+| Release flow    | Manual npm publish, automated release | Manual is acceptable for MVP.                          |
 
 ## Review Cadence
 

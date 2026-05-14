@@ -702,3 +702,23 @@ npx agent-doctor init
 ```
 
 Así como muchos proyectos tienen linters, formatters y checkers de salud, Agent Doctor busca convertirse en el checker de preparación para agentes de código.
+
+---
+
+## Estado de implementación
+
+El Milestone 1 ya incluye un scaffold inicial de CLI en TypeScript y el comando read-only `scan`.
+
+Comandos de desarrollo:
+
+```bash
+pnpm install
+pnpm dev -- scan
+pnpm build
+pnpm test
+pnpm lint
+pnpm format:check
+pnpm check
+```
+
+El comando `scan` revisa señales iniciales del repositorio sin crear, modificar ni eliminar archivos.

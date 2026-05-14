@@ -48,3 +48,9 @@ Pull requests should include a concise summary, affected files or modules, valid
 ## Security & Agent-Specific Instructions
 
 Do not commit secrets, `.env` files, tokens, or private keys. Agent Doctor should not require API keys or hosted services for the MVP. Discuss changes that affect architecture, distribution, security, or public CLI behavior before implementation.
+
+## Subagent Collaboration
+
+Specialized agents should use the role definitions in `.agents/agents/` and the workflow in `.agents/workflows/development-orchestration.md`.
+
+Start each implementation increment from a written work brief. Use `.agents/messages/work-brief-template.md` for planning and `.agents/messages/handoff-template.md` when passing work between roles.

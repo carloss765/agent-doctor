@@ -10,6 +10,15 @@ Use these files when assigning work to a specialized agent:
 - [QA](qa.md): validates behavior, finds regressions, and documents test evidence.
 - [Product Designer](product-designer.md): shapes user flows, interaction details, and usable interface specifications.
 
+## Collaboration Workflow
+
+Use [Development Orchestration](../workflows/development-orchestration.md) to coordinate how subagents communicate during implementation.
+
+Use these templates for concise handoffs:
+
+- [Work Brief Template](../messages/work-brief-template.md)
+- [Subagent Handoff Template](../messages/handoff-template.md)
+
 ## Shared Rules
 
 - Read repository instructions before starting, including `AGENTS.md`, `README.md`, and relevant docs.
