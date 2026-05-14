@@ -8,6 +8,7 @@ const green = "\u001b[32m";
 const yellow = "\u001b[33m";
 const dim = "\u001b[2m";
 const bold = "\u001b[1m";
+const red = "\u001b[31m";
 
 export function shouldUseColor(): boolean {
   return Boolean(process.stdout.isTTY) && process.env.NO_COLOR === undefined;
@@ -45,6 +46,30 @@ export function success(value: string, options: PresentationOptions = {}): strin
 
 export function warning(value: string, options: PresentationOptions = {}): string {
   return paint(value, yellow, options.color ?? false);
+}
+
+export function danger(value: string, options: PresentationOptions = {}): string {
+  return paint(value, red, options.color ?? false);
+}
+
+export function muted(value: string, options: PresentationOptions = {}): string {
+  return paint(value, dim, options.color ?? false);
+}
+
+export function progress(value: string, options: PresentationOptions = {}): string {
+  return `${paint("..", cyan, options.color ?? false)} ${value}`;
+}
+
+export function successItem(value: string, options: PresentationOptions = {}): string {
+  return `  ${success("✓", options)} ${value}`;
+}
+
+export function missingItem(value: string, options: PresentationOptions = {}): string {
+  return `  ${warning("-", options)} ${value}`;
+}
+
+export function skippedItem(value: string, options: PresentationOptions = {}): string {
+  return `  ${muted("-", options)} ${value}`;
 }
 
 function paint(value: string, code: string, enabled: boolean): string {
