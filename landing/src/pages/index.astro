@@ -15,20 +15,25 @@ import "../styles/global.css";
     <title>Agent Doctor</title>
   </head>
   <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
     <header class="site-header">
       <a class="brand" href="#top" aria-label="Agent Doctor home">
         <span class="brand-mark" aria-hidden="true"></span>
         Agent Doctor
       </a>
       <nav class="site-nav" aria-label="Primary navigation">
+        <a href="#commands">Commands</a>
         <a href="#workflow">Workflow</a>
         <a href="#checks">Checks</a>
-        <a href="#install">Install</a>
       </nav>
+      <div class="header-actions">
+        <a class="header-github" href="https://github.com/carloss765/agent-doctor">GitHub</a>
+        <a href="#credits">Built by Carlos Z</a>
+      </div>
     </header>
 
-    <main id="top">
-      <section class="hero" aria-labelledby="hero-title">
+    <main id="main-content">
+      <section class="hero" id="top" aria-labelledby="hero-title">
         <canvas id="ascii-canvas" aria-hidden="true"></canvas>
         <div class="hero-content">
           <p class="eyebrow">Repository readiness for coding agents</p>
@@ -37,13 +42,22 @@ import "../styles/global.css";
             Check whether a project has the context, commands, safety files, and agent tooling it
             needs before you delegate work to Codex, Claude Code, OpenCode, Cursor, or Windsurf.
           </p>
-          <div class="hero-command" aria-label="Command to run Agent Doctor">
+          <div class="hero-command" role="group" aria-label="Command to run Agent Doctor">
             <span>$</span>
-            <code>npx agent-doctor scan</code>
+            <code id="hero-command-text">npx agent-doctor scan</code>
+            <button
+              class="copy-button"
+              type="button"
+              data-copy-command="npx agent-doctor scan"
+              aria-describedby="copy-status"
+            >
+              Copy
+            </button>
           </div>
+          <p class="copy-status" id="copy-status" aria-live="polite"></p>
           <div class="hero-actions" aria-label="Primary actions">
             <a class="button button-primary" href="#install">Install CLI</a>
-            <a class="button button-secondary" href="#preview">See output</a>
+            <a class="button button-secondary" href="#commands">See commands</a>
           </div>
         </div>
         <div class="hero-terminal" id="preview" aria-label="Agent Doctor scan output preview">
@@ -81,6 +95,50 @@ Next steps
         <div>
           <strong>Your agent executes</strong>
           <span>Use the generated instructions with the coding agent you already trust.</span>
+        </div>
+      </section>
+
+      <section class="section section-split command-section" id="commands">
+        <div class="section-heading">
+          <p class="eyebrow">Commands</p>
+          <h2>Run one command, then choose the next step.</h2>
+          <p>
+            Agent Doctor starts with a read-only scan. If the repository is missing context, use
+            `init` to create safe base files or `prescribe` to generate instructions for your coding
+            agent.
+          </p>
+        </div>
+        <div class="run-demo" aria-label="Animated command run preview">
+          <canvas id="command-canvas" aria-hidden="true"></canvas>
+          <pre><code><span class="terminal-muted">$</span> npx agent-doctor scan
+<span class="terminal-muted">.. Scanning repository...</span>
+<span class="terminal-ok">✓ README.md found</span>
+<span class="terminal-ok">✓ package.json found</span>
+<span class="terminal-danger">✕ AGENTS.md missing</span>
+
+<span class="terminal-muted">$</span> npx agent-doctor init
+<span class="terminal-ok">✓ Created AGENTS.md</span>
+<span class="terminal-ok">✓ Created .env.example</span>
+
+<span class="terminal-muted">$</span> npx agent-doctor prescribe
+<span class="terminal-ok">✓ Created .agent-doctor/prescription.md</span></code></pre>
+        </div>
+        <div class="command-grid">
+          <article>
+            <code>npx agent-doctor scan</code>
+            <h3>Diagnose readiness</h3>
+            <p>Scores the repository and reports missing files, scripts, agent tools, and skills.</p>
+          </article>
+          <article>
+            <code>npx agent-doctor init</code>
+            <h3>Create safe base files</h3>
+            <p>Adds missing Agent Doctor starter files without overwriting existing project files.</p>
+          </article>
+          <article>
+            <code>npx agent-doctor prescribe</code>
+            <h3>Generate the agent brief</h3>
+            <p>Writes a focused prescription your coding agent can follow on the next run.</p>
+          </article>
         </div>
       </section>
 
@@ -181,15 +239,28 @@ Prescription
           </a>
         </div>
       </section>
+
+      <section class="credits" id="credits" aria-labelledby="credits-title">
+        <div>
+          <p class="eyebrow">Credits</p>
+          <h2 id="credits-title">Built by Carlos.</h2>
+        </div>
+        <div class="credits-links">
+          <a href="https://github.com/carloss765">Creator GitHub</a>
+          <a href="https://github.com/carloss765/agent-doctor">Project repository</a>
+        </div>
+      </section>
     </main>
 
     <footer class="site-footer">
-      <span>Agent Doctor</span>
-      <span>Open source repository readiness for coding agents.</span>
+      <span>Agent Doctor by Carlos</span>
+      <a href="https://github.com/carloss765/agent-doctor">GitHub repository</a>
     </footer>
 
     <script>
       import "../scripts/ascii-canvas";
+      import "../scripts/command-run-canvas";
+      import "../scripts/copy-command";
     </script>
   </body>
 </html>

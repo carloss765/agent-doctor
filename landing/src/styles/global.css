@@ -80,6 +80,24 @@ button:focus-visible {
   outline-offset: 4px;
 }
 
+.skip-link {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 100;
+  padding: 8px 12px;
+  border-radius: 6px;
+  background: var(--foreground);
+  color: var(--background);
+  font-size: 14px;
+  font-weight: 600;
+  transform: translateY(-150%);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
 .site-header {
   position: sticky;
   top: 0;
@@ -95,7 +113,8 @@ button:focus-visible {
 }
 
 .brand,
-.site-nav {
+.site-nav,
+.header-actions {
   display: flex;
   align-items: center;
 }
@@ -123,6 +142,29 @@ button:focus-visible {
 
 .site-nav a:hover {
   color: var(--foreground);
+}
+
+.header-actions {
+  gap: 10px;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.header-actions a {
+  color: var(--muted);
+}
+
+.header-actions a:hover {
+  color: var(--foreground);
+}
+
+.header-github {
+  min-height: 34px;
+  padding: 0 12px;
+  border: 1px solid var(--line-strong);
+  border-radius: 6px;
+  color: var(--foreground) !important;
+  font-weight: 600;
 }
 
 .hero {
@@ -250,6 +292,29 @@ h3 {
 
 .hero-command code {
   overflow-x: auto;
+}
+
+.copy-button {
+  min-height: 32px;
+  padding: 0 10px;
+  border: 1px solid var(--line-strong);
+  border-radius: 5px;
+  background: var(--background);
+  color: var(--foreground);
+  font: inherit;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.copy-button:hover {
+  border-color: var(--foreground);
+}
+
+.copy-status {
+  min-height: 20px;
+  margin-bottom: 16px;
+  color: var(--muted);
+  font-size: 13px;
 }
 
 .button {
@@ -433,9 +498,73 @@ pre {
 
 .workflow-list p,
 .check-grid p,
-.output-grid p {
+.output-grid p,
+.section-heading > p:not(.eyebrow),
+.command-grid p {
   margin-bottom: 0;
   color: var(--muted);
+}
+
+.command-section {
+  grid-template-areas:
+    "heading demo"
+    "cards cards";
+}
+
+.command-section .section-heading {
+  grid-area: heading;
+}
+
+.run-demo {
+  position: relative;
+  grid-area: demo;
+  min-height: 410px;
+  overflow: hidden;
+  border: 1px solid var(--terminal-border);
+  border-radius: 8px;
+  background: var(--inverse);
+}
+
+#command-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.44;
+}
+
+.run-demo pre {
+  position: relative;
+  z-index: 1;
+  padding: 24px;
+}
+
+.command-grid {
+  display: grid;
+  grid-area: cards;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  margin-top: 4px;
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+
+.command-grid article {
+  min-height: 220px;
+  padding: 28px;
+  background: var(--background);
+}
+
+.command-grid code {
+  display: inline-flex;
+  min-height: 30px;
+  align-items: center;
+  margin-bottom: 46px;
+  padding: 0 9px;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  background: var(--subtle);
+  font-size: 13px;
 }
 
 .check-grid {
@@ -535,6 +664,47 @@ pre {
   font-size: 14px;
 }
 
+.site-footer a,
+.credits-links a {
+  color: var(--foreground);
+  font-weight: 600;
+}
+
+.credits {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(320px, 1.1fr);
+  gap: 72px;
+  align-items: center;
+  width: min(100%, 1180px);
+  margin: 0 auto;
+  padding: 112px 32px;
+  border-bottom: 1px solid var(--line);
+}
+
+.credits h2 {
+  font-size: clamp(32px, 4vw, 56px);
+}
+
+.credits-links {
+  display: grid;
+  gap: 12px;
+}
+
+.credits-links a {
+  display: flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--subtle);
+}
+
+.credits-links a::after {
+  content: "↗";
+}
+
 @media (max-width: 900px) {
   .site-header {
     padding: 0 20px;
@@ -547,7 +717,8 @@ pre {
   .hero,
   .section-split,
   .install,
-  .output-grid {
+  .output-grid,
+  .credits {
     grid-template-columns: 1fr;
   }
 
@@ -564,8 +735,16 @@ pre {
   }
 
   .principles,
-  .check-grid {
+  .check-grid,
+  .command-grid {
     grid-template-columns: 1fr;
+  }
+
+  .command-section {
+    grid-template-areas:
+      "heading"
+      "demo"
+      "cards";
   }
 
   .principles {
@@ -578,7 +757,8 @@ pre {
   }
 
   .section,
-  .install {
+  .install,
+  .credits {
     padding: 84px 20px;
   }
 
@@ -592,8 +772,29 @@ pre {
     display: none;
   }
 
+  .site-header {
+    gap: 12px;
+  }
+
+  .header-actions {
+    gap: 8px;
+    font-size: 13px;
+  }
+
   .hero {
     padding-top: 56px;
+  }
+
+  .hero-command {
+    width: 100%;
+  }
+
+  .hero-command code {
+    min-width: 0;
+  }
+
+  .copy-button {
+    margin-left: auto;
   }
 
   h1 {
@@ -611,6 +812,10 @@ pre {
 
   .check-grid article {
     min-height: 210px;
+  }
+
+  .command-grid article {
+    min-height: 190px;
   }
 
   .check-grid span {
