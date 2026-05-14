@@ -1,5 +1,11 @@
 import type { InitResult } from "../generator/types.js";
-import { heading, renderHeader, type PresentationOptions } from "./presentation.js";
+import {
+  heading,
+  renderHeader,
+  skippedItem,
+  successItem,
+  type PresentationOptions
+} from "./presentation.js";
 
 export function formatInitResult(result: InitResult, options: PresentationOptions = {}): string {
   return [
@@ -11,13 +17,17 @@ export function formatInitResult(result: InitResult, options: PresentationOption
     "",
     formatFiles(
       "Created",
-      result.files.filter((file) => file.status === "created").map((file) => file.path)
+      result.files.filter((file) => file.status === "created").map((file) => file.path),
+      successItem,
+      options
     ),
     formatFiles(
       "Skipped",
       result.files
         .filter((file) => file.status === "skipped")
-        .map((file) => `${file.path} already exists`)
+        .map((file) => `${file.path} already exists`),
+      skippedItem,
+      options
     ),
     heading("Next steps:", options),
     "  - Review AGENTS.md and adapt it to your team workflow.",
@@ -25,9 +35,14 @@ export function formatInitResult(result: InitResult, options: PresentationOption
   ].join("\n");
 }
 
-function formatFiles(title: string, files: string[]): string {
+function formatFiles(
+  title: string,
+  files: string[],
+  formatFile: (file: string, options: PresentationOptions) => string,
+  options: PresentationOptions
+): string {
   const renderedFiles =
-    files.length > 0 ? files.map((file) => `  - ${file}`) : ["  None detected."];
+    files.length > 0 ? files.map((file) => formatFile(file, options)) : ["  None detected."];
 
   return [`${title}:`, ...renderedFiles, ""].join("\n");
 }

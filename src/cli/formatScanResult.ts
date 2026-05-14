@@ -2,8 +2,10 @@ import { analyzeReadiness } from "../analyzer/analyzeReadiness.js";
 import type { ScanResult } from "../scanner/types.js";
 import {
   heading,
+  missingItem,
   renderTitle,
   success,
+  successItem,
   warning,
   type PresentationOptions
 } from "./presentation.js";
@@ -27,17 +29,23 @@ export function formatScanResult(result: ScanResult, options: PresentationOption
     "",
     formatList(
       "Found",
-      result.found.map((signal) => signal.label)
+      result.found.map((signal) => signal.label),
+      successItem,
+      options
     ),
     formatList(
       "Missing",
-      result.missing.map((signal) => signal.label)
+      result.missing.map((signal) => signal.label),
+      missingItem,
+      options
     ),
     formatList(
       "Scripts detected",
-      result.scripts.map((script) => `${script.name}: ${script.command}`)
+      result.scripts.map((script) => `${script.name}: ${script.command}`),
+      successItem,
+      options
     ),
-    formatList("Missing scripts", result.missingScripts),
+    formatList("Missing scripts", result.missingScripts, missingItem, options),
     heading("Next steps:", options),
     ...analysis.nextSteps.map((step) => `  - ${step}`)
   ];
@@ -45,9 +53,14 @@ export function formatScanResult(result: ScanResult, options: PresentationOption
   return lines.join("\n");
 }
 
-function formatList(title: string, items: string[]): string {
+function formatList(
+  title: string,
+  items: string[],
+  formatItem: (item: string, options: PresentationOptions) => string,
+  options: PresentationOptions
+): string {
   const renderedItems =
-    items.length > 0 ? items.map((item) => `  - ${item}`) : ["  None detected."];
+    items.length > 0 ? items.map((item) => formatItem(item, options)) : ["  None detected."];
 
   return [`${title}:`, ...renderedItems, ""].join("\n");
 }
