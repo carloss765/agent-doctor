@@ -6,7 +6,14 @@ if (canvas) {
   const context = canvas.getContext("2d");
 
   if (context) {
-    const rows = [
+    const asciiRows = [
+      " ______     ______     ______     __   __     ______   _____     ______     ______     ______   ______     ______    ",
+      '/\\  __ \\   /\\  ___\\   /\\  ___\\   /\\ "-.\\ \\   /\\__  _\\ /\\  __-.  /\\  __ \\   /\\  ___\\   /\\__  _\\ /\\  __ \\   /\\  == \\   ',
+      "\\ \\  __ \\  \\ \\ \\__ \\  \\ \\  __\\   \\ \\ \\-.  \\  \\/_/\\ \\/ \\ \\ \\/\\ \\ \\ \\ \\/\\ \\  \\ \\ \\____  \\/_/\\ \\/ \\ \\ \\/\\ \\  \\ \\  __<   ",
+      ' \\ \\_\\ \\_\\  \\ \\_____\\  \\ \\_____\\  \\ \\_\\\\"\\_\\    \\ \\_\\  \\ \\____-  \\ \\_____\\  \\ \\_____\\    \\ \\_\\  \\ \\_____\\  \\ \\_\\ \\_\\ ',
+      "  \\/_/\\/_/   \\/_____/   \\/_____/   \\/_/ \\/_/     \\/_/   \\/____/   \\/_____/   \\/_____/     \\/_/   \\/_____/   \\/_/ /_/"
+    ];
+    const commandRows = [
       "$ npx agent-doctor scan",
       ".. Scanning repository",
       "✓ README.md found",
@@ -40,13 +47,23 @@ if (canvas) {
 
     function draw(): void {
       context.clearRect(0, 0, width, height);
-      context.font = "12px SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace";
       context.textBaseline = "top";
 
-      rows.forEach((row, index) => {
+      const asciiFontSize = Math.max(5, Math.min(9, (width - 48) / 74));
+      context.font = `${asciiFontSize}px SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace`;
+      asciiRows.forEach((row, index) => {
+        const y = 24 + index * (asciiFontSize + 4);
+        context.fillStyle = "rgba(34, 197, 94, 0.72)";
+        context.fillText(row, 24, y);
+      });
+
+      const commandStartY = 48 + asciiRows.length * (asciiFontSize + 4);
+      context.font = "12px SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace";
+
+      commandRows.forEach((row, index) => {
         const reveal = prefersReducedMotion ? row.length : Math.max(0, (frame - index * 14) % 180);
         const text = row.slice(0, Math.min(row.length, reveal));
-        const y = 28 + index * 32;
+        const y = commandStartY + index * 28;
 
         context.fillStyle = row.startsWith("✕") ? "rgba(248, 113, 113, 0.46)" : ink(0.38);
         context.fillText(text, 24, y);
