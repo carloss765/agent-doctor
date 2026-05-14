@@ -1,5 +1,5 @@
 :root {
-  color-scheme: light;
+  color-scheme: light dark;
   --background: #ffffff;
   --foreground: #000000;
   --muted: #666666;
@@ -9,7 +9,16 @@
   --inverse: #0a0a0a;
   --inverse-text: #ededed;
   --inverse-muted: #9ca3af;
+  --success: #16a34a;
+  --success-soft: rgba(22, 163, 74, 0.1);
+  --danger: #dc2626;
+  --danger-soft: rgba(220, 38, 38, 0.1);
   --focus: #0070f3;
+  --header-background: rgba(255, 255, 255, 0.86);
+  --hero-fade: rgba(255, 255, 255, 0);
+  --terminal-border: #1f1f1f;
+  --terminal-line: #262626;
+  --terminal-shadow: rgba(0, 0, 0, 0.16);
   font-family:
     Inter,
     ui-sans-serif,
@@ -18,6 +27,30 @@
     BlinkMacSystemFont,
     "Segoe UI",
     sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #000000;
+    --foreground: #ededed;
+    --muted: #a1a1aa;
+    --subtle: #090909;
+    --line: #242424;
+    --line-strong: #3f3f46;
+    --inverse: #050505;
+    --inverse-text: #f4f4f5;
+    --inverse-muted: #a1a1aa;
+    --success: #22c55e;
+    --success-soft: rgba(34, 197, 94, 0.16);
+    --danger: #f87171;
+    --danger-soft: rgba(248, 113, 113, 0.16);
+    --focus: #58a6ff;
+    --header-background: rgba(0, 0, 0, 0.78);
+    --hero-fade: rgba(0, 0, 0, 0);
+    --terminal-border: #2f2f2f;
+    --terminal-line: #27272a;
+    --terminal-shadow: rgba(255, 255, 255, 0.08);
+  }
 }
 
 * {
@@ -57,7 +90,7 @@ button:focus-visible {
   min-height: 64px;
   padding: 0 32px;
   border-bottom: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.86);
+  background: var(--header-background);
   backdrop-filter: blur(18px);
 }
 
@@ -112,7 +145,7 @@ button:focus-visible {
   height: 132px;
   pointer-events: none;
   content: "";
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0), var(--background));
+  background: linear-gradient(180deg, var(--hero-fade), var(--background));
 }
 
 #ascii-canvas {
@@ -180,8 +213,8 @@ h3 {
 
 .hero-lede {
   max-width: 660px;
-  margin-bottom: 30px;
-  color: #3f3f46;
+  margin-bottom: 24px;
+  color: var(--muted);
   font-size: clamp(18px, 2vw, 23px);
   line-height: 1.42;
 }
@@ -192,6 +225,31 @@ h3 {
   flex-wrap: wrap;
   gap: 12px;
   align-items: center;
+}
+
+.hero-command {
+  display: inline-flex;
+  max-width: 100%;
+  min-height: 48px;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 24px;
+  padding: 0 14px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--subtle);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.hero-command span {
+  color: var(--muted);
+}
+
+.hero-command code {
+  overflow-x: auto;
 }
 
 .button {
@@ -233,10 +291,10 @@ h3 {
 .hero-terminal {
   width: 100%;
   margin-right: auto;
-  border: 1px solid #1f1f1f;
+  border: 1px solid var(--terminal-border);
   border-radius: 8px;
   background: var(--inverse);
-  box-shadow: 0 28px 90px rgba(0, 0, 0, 0.16);
+  box-shadow: 0 28px 90px var(--terminal-shadow);
   overflow: hidden;
 }
 
@@ -246,14 +304,25 @@ h3 {
   align-items: center;
   height: 42px;
   padding: 0 16px;
-  border-bottom: 1px solid #262626;
+  border-bottom: 1px solid var(--terminal-line);
 }
 
-.terminal-top span {
-  width: 9px;
-  height: 9px;
+.window-control {
+  width: 11px;
+  height: 11px;
   border-radius: 999px;
-  background: #3f3f46;
+}
+
+.window-close {
+  background: #ff5f57;
+}
+
+.window-minimize {
+  background: #ffbd2e;
+}
+
+.window-maximize {
+  background: #28c840;
 }
 
 pre,
@@ -267,6 +336,20 @@ pre {
   color: var(--inverse-text);
   font-size: 13px;
   line-height: 1.7;
+}
+
+.terminal-muted {
+  color: var(--inverse-muted);
+}
+
+.terminal-ok,
+.scan-ok {
+  color: var(--success);
+}
+
+.terminal-danger,
+.scan-danger {
+  color: var(--danger);
 }
 
 .hero-terminal pre,
@@ -365,6 +448,8 @@ pre {
 }
 
 .check-grid article {
+  display: flex;
+  flex-direction: column;
   min-height: 260px;
   padding: 28px;
   background: var(--background);
@@ -372,10 +457,30 @@ pre {
 
 .check-grid span {
   display: block;
-  margin-bottom: 86px;
+  margin-bottom: 64px;
   color: var(--muted);
   font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
   font-size: 12px;
+}
+
+.scan-list {
+  display: grid;
+  gap: 8px;
+  margin: auto 0 0;
+  padding: 24px 0 0;
+  list-style: none;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 13px;
+}
+
+.scan-list li {
+  display: flex;
+  min-height: 28px;
+  align-items: center;
+  padding: 0 10px;
+  border: 1px solid currentColor;
+  border-radius: 6px;
+  background: color-mix(in srgb, currentColor 9%, transparent);
 }
 
 .proof-section {

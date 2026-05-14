@@ -1,5 +1,6 @@
 const canvas = document.querySelector<HTMLCanvasElement>("#ascii-canvas");
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const prefersDarkTheme = window.matchMedia("(prefers-color-scheme: dark)");
 
 if (canvas) {
   const context = canvas.getContext("2d");
@@ -23,6 +24,10 @@ if (canvas) {
     let frame = 0;
     let animationId = 0;
 
+    function ink(alpha: number): string {
+      return prefersDarkTheme.matches ? `rgba(255, 255, 255, ${alpha})` : `rgba(0, 0, 0, ${alpha})`;
+    }
+
     function resize(): void {
       const ratio = window.devicePixelRatio || 1;
       width = canvas.clientWidth;
@@ -34,7 +39,7 @@ if (canvas) {
 
     function draw(): void {
       context.clearRect(0, 0, width, height);
-      context.fillStyle = "rgba(0, 0, 0, 0.08)";
+      context.fillStyle = ink(0.08);
       context.font = "12px SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace";
       context.textBaseline = "top";
 
@@ -45,7 +50,7 @@ if (canvas) {
         for (let x = 0; x < columns; x += 1) {
           const index = (x * 7 + y * 11 + frame) % glyphs.length;
           const pulse = (x + y + frame) % 19 === 0;
-          context.fillStyle = pulse ? "rgba(0, 0, 0, 0.22)" : "rgba(0, 0, 0, 0.07)";
+          context.fillStyle = pulse ? ink(0.22) : ink(0.07);
           context.fillText(glyphs[index], x * cell, y * cell);
         }
       }
@@ -66,7 +71,7 @@ if (canvas) {
         const resolved = (frame + index * 13) % 120 > 28;
         const marker = resolved ? "✓" : "..";
 
-        context.fillStyle = resolved ? "rgba(0, 0, 0, 0.34)" : "rgba(0, 0, 0, 0.16)";
+        context.fillStyle = resolved ? ink(0.34) : ink(0.16);
         context.fillText(`${marker} ${signal}`, x, y % Math.max(height - 30, 120));
       });
     }
@@ -78,7 +83,7 @@ if (canvas) {
       const score = Math.min(rawScore, 100);
       const bar = "█".repeat(Math.round(score / 10)).padEnd(10, "░");
 
-      context.fillStyle = "rgba(0, 0, 0, 0.28)";
+      context.fillStyle = ink(0.28);
       context.fillText(`readiness ${score}/100 ${bar}`, 34, Math.max(height - 78, 120));
     }
 
@@ -89,12 +94,20 @@ if (canvas) {
       }
     });
 
+    function handleThemeChange(): void {
+      window.cancelAnimationFrame(animationId);
+      draw();
+    }
+
+    prefersDarkTheme.addEventListener("change", handleThemeChange);
+
     resize();
     draw();
 
     if (import.meta.hot) {
       import.meta.hot.dispose(() => {
         window.cancelAnimationFrame(animationId);
+        prefersDarkTheme.removeEventListener("change", handleThemeChange);
       });
     }
   }
