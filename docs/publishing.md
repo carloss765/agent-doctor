@@ -2,10 +2,10 @@
 
 ## Goal
 
-Publish Agent Doctor as a public npm package so users can run:
+Publish Agent Ready as a public npm package so users can run:
 
 ```bash
-npx @carloss765/agent-doctor
+npx agent-ready
 ```
 
 ## Requirements
@@ -22,13 +22,11 @@ pnpm install
 pnpm check
 pnpm format:check
 pnpm pack:dry-run
-npm view agent-doctor
-npm view @carloss765/agent-doctor
+npm view agent-ready
 ```
 
-The unscoped `agent-doctor` package name is already occupied on npm. Publish under the scoped package name unless the unscoped name becomes available later.
-
-If `npm view @carloss765/agent-doctor` returns `404`, the scoped package name is available.
+The unscoped `agent-ready` package name must return `404` before the first publish. If it returns
+package metadata, stop and choose another name.
 
 ## Publish
 
@@ -42,14 +40,10 @@ npm publish --access public
 After publishing:
 
 ```bash
-npx agent-doctor
-npx @carloss765/agent-doctor
-npx agent-doctor scan
-npx @carloss765/agent-doctor scan
-npx agent-doctor init --yes
-npx @carloss765/agent-doctor init --yes
-npx agent-doctor prescribe --yes
-npx @carloss765/agent-doctor prescribe --yes
+npx agent-ready
+npx agent-ready scan
+npx agent-ready init --yes
+npx agent-ready prescribe --yes
 ```
 
 ## Safety Notes

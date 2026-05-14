@@ -2,7 +2,7 @@
 
 ## Goal
 
-Define the first product presentation layer for Agent Doctor across CLI and future landing page.
+Define the first product presentation layer for Agent Ready across CLI and future landing page.
 
 ## Scope
 

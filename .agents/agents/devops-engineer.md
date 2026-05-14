@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Protect Agent Doctor's local development, CI, npm packaging, and release path. Keep operational changes reproducible and small.
+Protect Agent Ready's local development, CI, npm packaging, and release path. Keep operational changes reproducible and small.
 
 ## Responsibilities
 

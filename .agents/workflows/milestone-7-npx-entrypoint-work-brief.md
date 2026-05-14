@@ -2,7 +2,7 @@
 
 ## Goal
 
-Make the default CLI entrypoint useful for `npx agent-doctor`.
+Make the default CLI entrypoint useful for `npx agent-ready`.
 
 ## Scope
 
@@ -19,9 +19,9 @@ Make the default CLI entrypoint useful for `npx agent-doctor`.
 
 ## Acceptance Criteria
 
-- `agent-doctor` runs a read-only scan by default.
-- `agent-doctor scan` keeps working.
-- `agent-doctor init` keeps working.
-- `agent-doctor prescribe` keeps working.
+- `agent-ready` runs a read-only scan by default.
+- `agent-ready scan` keeps working.
+- `agent-ready init` keeps working.
+- `agent-ready prescribe` keeps working.
 - `pnpm check` passes.
 - `pnpm format:check` passes.

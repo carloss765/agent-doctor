@@ -2,7 +2,7 @@
 
 ## Goal
 
-Complete the base repository scanner so Agent Doctor returns a structured, deterministic, and testable view of the repository state.
+Complete the base repository scanner so Agent Ready returns a structured, deterministic, and testable view of the repository state.
 
 This milestone closes the first repository readiness checks and prepares the input needed for analyzer and scoring work in Milestone 3.
 
@@ -49,7 +49,7 @@ Users should be able to run `scan` and understand which base files, manifests, p
 - No readiness score yet.
 - No analyzer module yet.
 - No `init` command.
-- No `.agent-doctor/report.md` or `.agent-doctor/report.json` generation.
+- No `.agent-ready/report.md` or `.agent-ready/report.json` generation.
 - No `prescribe` command.
 - No interactive mode.
 - No framework detection.
@@ -107,7 +107,7 @@ Missing scripts:
 - Run `pnpm check`.
 - Run `pnpm dev -- scan`.
 - Run `node dist/cli.js scan`.
-- Confirm `scan` does not create `.agent-doctor/`.
+- Confirm `scan` does not create `.agent-ready/`.
 - Confirm output order is stable across repeated runs.
 
 ## Risks

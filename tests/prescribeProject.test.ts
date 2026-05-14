@@ -17,10 +17,10 @@ describe("prescribeProject", () => {
 
     try {
       const result = await prescribeProject(await scanRepository(root));
-      const prescription = await readFile(path.join(root, ".agent-doctor/prescription.md"), "utf8");
+      const prescription = await readFile(path.join(root, ".agent-ready/prescription.md"), "utf8");
 
-      expect(result.files).toEqual([{ path: ".agent-doctor/prescription.md", status: "created" }]);
-      expect(prescription).toContain("# Agent Doctor Prescription");
+      expect(result.files).toEqual([{ path: ".agent-ready/prescription.md", status: "created" }]);
+      expect(prescription).toContain("# Agent Ready Prescription");
       expect(prescription).toContain("## Agent Readiness");
       expect(prescription).toContain("- Score: 25/100");
       expect(prescription).toContain("- Status: Needs setup");
@@ -34,16 +34,16 @@ describe("prescribeProject", () => {
 
   it("does not overwrite an existing prescription", async () => {
     const root = await createTempRepository({
-      ".agent-doctor/prescription.md": "custom prescription"
+      ".agent-ready/prescription.md": "custom prescription"
     });
 
     try {
       const result = await prescribeProject(await scanRepository(root));
 
-      expect(result.files).toEqual([{ path: ".agent-doctor/prescription.md", status: "skipped" }]);
-      await expect(
-        readFile(path.join(root, ".agent-doctor/prescription.md"), "utf8")
-      ).resolves.toBe("custom prescription");
+      expect(result.files).toEqual([{ path: ".agent-ready/prescription.md", status: "skipped" }]);
+      await expect(readFile(path.join(root, ".agent-ready/prescription.md"), "utf8")).resolves.toBe(
+        "custom prescription"
+      );
     } finally {
       await rm(root, { recursive: true, force: true });
     }
@@ -90,9 +90,9 @@ describe("prescribeProject", () => {
       await prescribeProject(await scanRepository(secondRoot));
 
       await expect(
-        readFile(path.join(firstRoot, ".agent-doctor/prescription.md"), "utf8")
+        readFile(path.join(firstRoot, ".agent-ready/prescription.md"), "utf8")
       ).resolves.toBe(
-        await readFile(path.join(secondRoot, ".agent-doctor/prescription.md"), "utf8")
+        await readFile(path.join(secondRoot, ".agent-ready/prescription.md"), "utf8")
       );
     } finally {
       await rm(firstRoot, { recursive: true, force: true });
@@ -100,13 +100,13 @@ describe("prescribeProject", () => {
     }
   });
 
-  it("creates only the prescription under .agent-doctor", async () => {
+  it("creates only the prescription under .agent-ready", async () => {
     const root = await createTempRepository({});
 
     try {
       await prescribeProject(await scanRepository(root));
 
-      await expect(readdir(path.join(root, ".agent-doctor"))).resolves.toEqual(["prescription.md"]);
+      await expect(readdir(path.join(root, ".agent-ready"))).resolves.toEqual(["prescription.md"]);
     } finally {
       await rm(root, { recursive: true, force: true });
     }
@@ -114,7 +114,7 @@ describe("prescribeProject", () => {
 });
 
 async function createTempRepository(files: Record<string, string>): Promise<string> {
-  const root = await mkdtemp(path.join(os.tmpdir(), "agent-doctor-"));
+  const root = await mkdtemp(path.join(os.tmpdir(), "agent-ready-"));
 
   await Promise.all(
     Object.entries(files).map(async ([file, content]) => {

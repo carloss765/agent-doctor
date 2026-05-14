@@ -2,13 +2,13 @@
 
 ## Purpose
 
-This document records the initial technical agreement for Agent Doctor.
+This document records the initial technical agreement for Agent Ready.
 
 The goal is to keep the project simple, maintainable, and easy for contributors and AI coding agents to understand.
 
 ## Product Context
 
-Agent Doctor is an open source CLI that checks whether a repository is ready to be worked on by coding agents.
+Agent Ready is an open source CLI that checks whether a repository is ready to be worked on by coding agents.
 
 The MVP should:
 
@@ -48,7 +48,7 @@ Technology choices should be evaluated using these criteria:
 | Testing         | Vitest         | Fast test runner with good TypeScript support.                                        |
 | Formatting      | Prettier       | Keeps formatting consistent with minimal discussion.                                  |
 | Linting         | ESLint         | Catches common TypeScript and JavaScript issues.                                      |
-| Distribution    | npm package    | Matches the expected usage: `npx agent-doctor`.                                       |
+| Distribution    | npm package    | Matches the expected usage: `npx agent-ready`.                                        |
 | CI              | GitHub Actions | Standard choice for open source validation and release checks.                        |
 
 ## Initial Recommendation
@@ -86,17 +86,17 @@ Each module should have one clear responsibility.
 ## Proposed Commands
 
 ```bash
-npx agent-doctor scan
-npx agent-doctor init
-npx agent-doctor prescribe
+npx agent-ready scan
+npx agent-ready init
+npx agent-ready prescribe
 ```
 
 Optional aliases can be added later:
 
 ```bash
-npx agent-doctor doctor
-npx agent-doctor fix
-npx agent-doctor prompt
+npx agent-ready check
+npx agent-ready fix
+npx agent-ready prompt
 ```
 
 ## Working Agreement

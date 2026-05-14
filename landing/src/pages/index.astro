@@ -9,17 +9,17 @@ import "../styles/global.css";
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="Agent Doctor checks whether a repository is ready for coding agents."
+      content="Agent Ready checks whether a repository is ready for coding agents."
     />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <title>AGENT DOCTOR</title>
+    <title>AGENT READY</title>
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
     <header class="site-header">
-      <a class="brand" href="#top" aria-label="Agent Doctor home">
+      <a class="brand" href="#top" aria-label="Agent Ready home">
         <img class="brand-mark" src="/favicon.svg" alt="" aria-hidden="true" />
-        AGENT DOCTOR
+        AGENT READY
       </a>
       <nav class="site-nav" aria-label="Primary navigation">
         <a href="#commands">Commands</a>
@@ -27,7 +27,7 @@ import "../styles/global.css";
         <a href="#checks">Checks</a>
       </nav>
       <div class="header-actions">
-        <a class="header-github" href="https://github.com/carloss765/agent-doctor">GitHub</a>
+        <a class="header-github" href="https://github.com/carloss765/agent-ready">GitHub</a>
         <a href="#credits">Built by Carlos</a>
       </div>
     </header>
@@ -38,19 +38,19 @@ import "../styles/global.css";
         <div class="hero-content">
           <p class="eyebrow">Repository readiness for coding agents</p>
           <div class="hero-wordmark">
-            <h1 id="hero-title">AGENT DOCTOR</h1>
+            <h1 id="hero-title">AGENT READY</h1>
           </div>
           <p class="hero-lede">
             Check whether a project has the context, commands, safety files, and agent tooling it
             needs before you delegate work to Codex, Claude Code, OpenCode, Cursor, or Windsurf.
           </p>
-          <div class="hero-command" role="group" aria-label="Command to run Agent Doctor">
+          <div class="hero-command" role="group" aria-label="Command to run Agent Ready">
             <span>$</span>
-            <code id="hero-command-text">npx agent-doctor scan</code>
+            <code id="hero-command-text">npx agent-ready scan</code>
             <button
               class="copy-button"
               type="button"
-              data-copy-command="npx agent-doctor scan"
+              data-copy-command="npx agent-ready scan"
               aria-describedby="copy-status"
             >
               Copy
@@ -62,13 +62,13 @@ import "../styles/global.css";
             <a class="button button-secondary" href="#commands">See commands</a>
           </div>
         </div>
-        <div class="hero-terminal" id="preview" aria-label="Agent Doctor scan output preview">
+        <div class="hero-terminal" id="preview" aria-label="Agent Ready scan output preview">
           <div class="terminal-top" aria-hidden="true">
             <span class="window-control window-close"></span>
             <span class="window-control window-minimize"></span>
             <span class="window-control window-maximize"></span>
           </div>
-          <pre><code><span class="terminal-muted">$</span> npx agent-doctor scan
+          <pre><code><span class="terminal-muted">$</span> npx agent-ready scan
 <span class="terminal-muted">.. Scanning repository...</span>
 
 Agent readiness
@@ -88,7 +88,7 @@ Next steps
       <section class="principles" aria-label="MVP principles">
         <div>
           <strong>No API keys</strong>
-          <span>Agent Doctor runs locally and does not call a model provider.</span>
+          <span>Agent Ready runs locally and does not call a model provider.</span>
         </div>
         <div>
           <strong>No risky fixes</strong>
@@ -105,39 +105,39 @@ Next steps
           <p class="eyebrow">Commands</p>
           <h2>Run one command, then choose the next step.</h2>
           <p>
-            Agent Doctor starts with a read-only scan. If the repository is missing context, use
+            Agent Ready starts with a read-only scan. If the repository is missing context, use
             `init` to create safe base files or `prescribe` to generate instructions for your coding
             agent.
           </p>
         </div>
         <div class="run-demo" aria-label="Animated command run preview">
           <canvas id="command-canvas" aria-hidden="true"></canvas>
-          <pre class="run-demo-fallback" aria-hidden="true"><code><span class="terminal-muted">$</span> npx agent-doctor scan
+          <pre class="run-demo-fallback" aria-hidden="true"><code><span class="terminal-muted">$</span> npx agent-ready scan
 <span class="terminal-muted">.. Scanning repository...</span>
 <span class="terminal-ok">✓ README.md found</span>
 <span class="terminal-ok">✓ package.json found</span>
 <span class="terminal-danger">✕ AGENTS.md missing</span>
 
-<span class="terminal-muted">$</span> npx agent-doctor init
+<span class="terminal-muted">$</span> npx agent-ready init
 <span class="terminal-ok">✓ Created AGENTS.md</span>
 <span class="terminal-ok">✓ Created .env.example</span>
 
-<span class="terminal-muted">$</span> npx agent-doctor prescribe
-<span class="terminal-ok">✓ Created .agent-doctor/prescription.md</span></code></pre>
+<span class="terminal-muted">$</span> npx agent-ready prescribe
+<span class="terminal-ok">✓ Created .agent-ready/prescription.md</span></code></pre>
         </div>
         <div class="command-grid">
           <article>
-            <code>npx agent-doctor scan</code>
+            <code>npx agent-ready scan</code>
             <h3>Diagnose readiness</h3>
             <p>Scores the repository and reports missing files, scripts, agent tools, and skills.</p>
           </article>
           <article>
-            <code>npx agent-doctor init</code>
+            <code>npx agent-ready init</code>
             <h3>Create safe base files</h3>
-            <p>Adds missing Agent Doctor starter files without overwriting existing project files.</p>
+            <p>Adds missing Agent Ready starter files without overwriting existing project files.</p>
           </article>
           <article>
-            <code>npx agent-doctor prescribe</code>
+            <code>npx agent-ready prescribe</code>
             <h3>Generate the agent brief</h3>
             <p>Writes a focused prescription your coding agent can follow on the next run.</p>
           </article>
@@ -221,9 +221,9 @@ Missing
   <span class="scan-danger">✕ test script</span>
 
 Prescription
-  .agent-doctor/prescription.md</code></pre>
+  .agent-ready/prescription.md</code></pre>
           <p>
-            Agent Doctor does not pretend to be the agent. It prepares the repo so the next agent
+            Agent Ready does not pretend to be the agent. It prepares the repo so the next agent
             has fewer assumptions to make and a clear verification path to follow.
           </p>
         </div>
@@ -235,8 +235,8 @@ Prescription
           <h2 id="install-title">Run it from any repository.</h2>
         </div>
         <div class="command-row">
-          <code>npx agent-doctor scan</code>
-          <a class="button button-primary" href="https://github.com/carloss765/agent-doctor">
+          <code>npx agent-ready scan</code>
+          <a class="button button-primary" href="https://github.com/carloss765/agent-ready">
             View GitHub
           </a>
         </div>
@@ -249,14 +249,14 @@ Prescription
         </div>
         <div class="credits-links">
           <a href="https://github.com/carloss765">Creator GitHub</a>
-          <a href="https://github.com/carloss765/agent-doctor">Project repository</a>
+          <a href="https://github.com/carloss765/agent-ready">Project repository</a>
         </div>
       </section>
     </main>
 
     <footer class="site-footer">
-      <span>Agent Doctor by Carlos</span>
-      <a href="https://github.com/carloss765/agent-doctor">GitHub repository</a>
+      <span>Agent Ready by Carlos</span>
+      <a href="https://github.com/carloss765/agent-ready">GitHub repository</a>
     </footer>
 
     <script>

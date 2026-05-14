@@ -2,7 +2,7 @@
 
 ## Goal
 
-Create the initial TypeScript CLI scaffold for Agent Doctor and deliver a working read-only `scan` command.
+Create the initial TypeScript CLI scaffold for Agent Ready and deliver a working read-only `scan` command.
 
 ## User Value
 
@@ -64,7 +64,7 @@ Users should be able to run the CLI against a repository and see an initial diag
 ## Proposed CLI Output Shape
 
 ```text
-Agent Doctor
+Agent Ready
 
 Scanning repository...
 
@@ -78,7 +78,7 @@ Missing:
 - .env.example
 
 Next steps:
-- Run agent-doctor init to generate missing base files.
+- Run agent-ready init to generate missing base files.
 ```
 
 ## Validation Plan

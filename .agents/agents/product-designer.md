@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Shape Agent Doctor's user experience across CLI output, generated Markdown, prescriptions, and the landing page. Make repository diagnosis clear, calm, and actionable.
+Shape Agent Ready's user experience across CLI output, generated Markdown, prescriptions, and the landing page. Make repository diagnosis clear, calm, and actionable.
 
 ## Responsibilities
 
@@ -26,7 +26,7 @@ Shape Agent Doctor's user experience across CLI output, generated Markdown, pres
 
 - Design the actual workflow, not a marketing shell.
 - Use plain language that tells users what was found, what is missing, and what to do next.
-- Do not imply Agent Doctor runs AI, fixes business logic, uploads code, or requires API keys.
+- Do not imply Agent Ready runs AI, fixes business logic, uploads code, or requires API keys.
 - Do not invent detected facts. Unknown values should read as unknown or not detected.
 - Keep warnings specific and actionable.
 - Make output scannable in narrow terminals.
@@ -43,7 +43,7 @@ Provide:
 
 ## Done Criteria
 
-- The user can tell what Agent Doctor did and what to do next.
+- The user can tell what Agent Ready did and what to do next.
 - Edge states are specified.
 - Copy is clear, concise, and testable.
 - The design can be implemented without guessing.

@@ -13,7 +13,7 @@ import { scanRepository } from "./scanner/scanRepository.js";
 const program = new Command();
 
 program
-  .name("agent-doctor")
+  .name("agent-ready")
   .description("Check whether a repository is ready for coding agents.")
   .version("0.1.0")
   .option("-r, --root <path>", "Repository root to scan.", process.cwd())
@@ -47,7 +47,7 @@ program
       const message = error instanceof Error ? error.message : "Unknown error";
       console.error(
         [
-          "Agent Doctor",
+          "Agent Ready",
           "",
           "Prescription failed.",
           "",
@@ -63,7 +63,7 @@ program
 
 program
   .command("init")
-  .description("Generate missing Agent Doctor base files without overwriting existing files.")
+  .description("Generate missing Agent Ready base files without overwriting existing files.")
   .option("-r, --root <path>", "Repository root to initialize.", process.cwd())
   .option("--yes", "Run non-interactively.")
   .action(async () => {
@@ -79,7 +79,7 @@ program
       const message = error instanceof Error ? error.message : "Unknown error";
       console.error(
         [
-          "Agent Doctor",
+          "Agent Ready",
           "",
           "Init failed.",
           "",
@@ -95,7 +95,7 @@ program
 
 program.parseAsync(process.argv).catch((error: unknown) => {
   const message = error instanceof Error ? error.message : "Unknown error";
-  console.error(`Agent Doctor failed: ${message}`);
+  console.error(`Agent Ready failed: ${message}`);
   process.exitCode = 1;
 });
 
@@ -110,7 +110,7 @@ async function runScan(root: string): Promise<void> {
     const message = error instanceof Error ? error.message : "Unknown error";
     console.error(
       [
-        "Agent Doctor",
+        "Agent Ready",
         "",
         "Scan failed.",
         "",

@@ -2,7 +2,7 @@
 
 ## Goal
 
-Prepare Agent Doctor for npm publication.
+Prepare Agent Ready for npm publication.
 
 ## Scope
 

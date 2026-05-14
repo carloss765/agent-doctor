@@ -47,14 +47,14 @@ describe("CLI presentation", () => {
   it("uses a compact header when the terminal is too narrow for ASCII art", () => {
     const header = renderHeader({ color: false, terminalColumns: 50 });
 
-    expect(header).toEqual(["AGENT DOCTOR", "Repository readiness for coding agents."]);
+    expect(header).toEqual(["AGENT READY", "Repository readiness for coding agents."]);
     expect(header.every((line) => line.length <= 50)).toBe(true);
   });
 
   it("shortens the header subtitle for very narrow terminals", () => {
     const header = renderHeader({ color: false, terminalColumns: 30 });
 
-    expect(header).toEqual(["AGENT DOCTOR", "Repo readiness for agents."]);
+    expect(header).toEqual(["AGENT READY", "Repo readiness for agents."]);
     expect(header.every((line) => line.length <= 30)).toBe(true);
   });
 });

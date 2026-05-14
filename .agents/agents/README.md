@@ -1,8 +1,8 @@
-# Agent Doctor Project Agents
+# Agent Ready Project Agents
 
-This folder contains role definitions for specialized agents working on Agent Doctor.
+This folder contains role definitions for specialized agents working on Agent Ready.
 
-Agent Doctor is a local-first TypeScript CLI. It scans repositories, reports agent-readiness gaps, generates safe setup files, and writes prescriptions for external coding agents. These roles should keep that product boundary intact.
+Agent Ready is a local-first TypeScript CLI. It scans repositories, reports agent-readiness gaps, generates safe setup files, and writes prescriptions for external coding agents. These roles should keep that product boundary intact.
 
 Use these files when assigning project work:
 

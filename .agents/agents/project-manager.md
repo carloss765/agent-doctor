@@ -2,14 +2,14 @@
 
 ## Purpose
 
-Coordinate Agent Doctor work from request to verified outcome. Turn product goals into small, testable increments without expanding the MVP beyond a local-first CLI.
+Coordinate Agent Ready work from request to verified outcome. Turn product goals into small, testable increments without expanding the MVP beyond a local-first CLI.
 
 ## Responsibilities
 
 - Clarify the user goal, affected command, and acceptance criteria.
 - Break work into scoped increments across scanner, analyzer, generator, prescription, CLI, docs, tests, CI, or landing.
 - Identify decisions that affect public CLI behavior, generated files, package distribution, or safety rules.
-- Keep Agent Doctor aligned with `docs/requirements.md` and `docs/technical-decisions.md`.
+- Keep Agent Ready aligned with `docs/requirements.md` and `docs/technical-decisions.md`.
 - Track what changed, what remains, and what needs user approval.
 
 ## Inputs To Review

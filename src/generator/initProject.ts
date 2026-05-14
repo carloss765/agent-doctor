@@ -34,7 +34,7 @@ function renderAgentsMd(scan: ScanResult): string {
 
 ## Project Overview
 
-This repository was initialized with Agent Doctor.
+This repository was initialized with Agent Ready.
 
 ## Commands
 
@@ -56,7 +56,7 @@ This repository was initialized with Agent Doctor.
 }
 
 function renderEnvExample(): string {
-  return `# Agent Doctor does not require environment variables for the MVP.
+  return `# Agent Ready does not require environment variables for the MVP.
 #
 # Add future optional configuration values here using safe placeholders.
 # Never commit real secrets, tokens, API keys, or credentials.

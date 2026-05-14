@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Validate that Agent Doctor's CLI behavior, generated files, scoring, and safety guarantees work as intended without regressions.
+Validate that Agent Ready's CLI behavior, generated files, scoring, and safety guarantees work as intended without regressions.
 
 ## Responsibilities
 
@@ -18,7 +18,7 @@ Validate that Agent Doctor's CLI behavior, generated files, scoring, and safety 
 - User request, work brief, acceptance criteria, and implementation notes.
 - Existing tests in `tests/`.
 - CLI formatting helpers and expected terminal output.
-- Generated file expectations under `.agent-doctor/`, `AGENTS.md`, `CLAUDE.md`, or agent-specific outputs.
+- Generated file expectations under `.agent-ready/`, `AGENTS.md`, `CLAUDE.md`, or agent-specific outputs.
 - Bug reports, logs, and reproduction repositories or fixtures.
 
 ## Operating Rules

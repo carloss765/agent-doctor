@@ -155,7 +155,7 @@ function missingFindingLabels(findings: Array<{ label: string; earned: boolean }
 }
 
 async function createTempRepository(files: Record<string, string>): Promise<string> {
-  const root = await mkdtemp(path.join(os.tmpdir(), "agent-doctor-"));
+  const root = await mkdtemp(path.join(os.tmpdir(), "agent-ready-"));
 
   await Promise.all(
     Object.entries(files).map(async ([file, content]) => {
