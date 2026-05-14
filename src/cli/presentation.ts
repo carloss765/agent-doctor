@@ -15,13 +15,24 @@ export function shouldUseColor(): boolean {
 
 export function renderHeader(options: PresentationOptions = {}): string[] {
   const color = options.color ?? false;
-  const logo = ["  ___                    _     ___          _             ", " / _ \\  __ _  ___ _ __ | |_  /   \\___  ___| |_ ___  _ __ ", "/ /_)/ / _` |/ _ \\ '_ \\| __|/ /\\ / _ \\/ __| __/ _ \\| '__|", "/ ___/ | (_| |  __/ | | | |_/ /_// (_) \\__ \\ || (_) | |   ", "\\/      \\__, |\\___|_| |_|\\__/___,' \\___/|___/\\__\\___/|_|   ", "        |___/                                             "];
+  const logo = [
+    "  ___                    _     ___          _             ",
+    " / _ \\  __ _  ___ _ __ | |_  /   \\___  ___| |_ ___  _ __ ",
+    "/ /_)/ / _` |/ _ \\ '_ \\| __|/ /\\ / _ \\/ __| __/ _ \\| '__|",
+    "/ ___/ | (_| |  __/ | | | |_/ /_// (_) \\__ \\ || (_) | |   ",
+    "\\/      \\__, |\\___|_| |_|\\__/___,' \\___/|___/\\__\\___/|_|   ",
+    "        |___/                                             "
+  ];
 
   return [
     ...logo.map((line) => paint(line, cyan, color)),
     paint("Agent Doctor", bold, color),
     paint("Repository readiness for coding agents.", dim, color)
   ];
+}
+
+export function renderTitle(options: PresentationOptions = {}): string {
+  return paint("Agent Doctor", bold, options.color ?? false);
 }
 
 export function heading(value: string, options: PresentationOptions = {}): string {

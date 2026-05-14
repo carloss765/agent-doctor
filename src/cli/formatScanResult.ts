@@ -1,11 +1,17 @@
 import { analyzeReadiness } from "../analyzer/analyzeReadiness.js";
 import type { ScanResult } from "../scanner/types.js";
-import { heading, renderHeader, success, warning, type PresentationOptions } from "./presentation.js";
+import {
+  heading,
+  renderTitle,
+  success,
+  warning,
+  type PresentationOptions
+} from "./presentation.js";
 
 export function formatScanResult(result: ScanResult, options: PresentationOptions = {}): string {
   const analysis = analyzeReadiness(result);
   const lines = [
-    ...renderHeader(options),
+    renderTitle(options),
     "",
     "Scan complete. No files were modified.",
     "",
