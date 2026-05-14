@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Implement focused, maintainable Agent Doctor changes that fit the existing TypeScript CLI architecture.
+Implement focused, maintainable Agent Ready changes that fit the existing TypeScript CLI architecture.
 
 ## Responsibilities
 

@@ -1,15 +1,15 @@
 <p align="center">
-  <img src="./landing/public/favicon.svg" alt="Agent Doctor favicon" width="72" height="72" />
+  <img src="./landing/public/favicon.svg" alt="Agent Ready favicon" width="72" height="72" />
 </p>
 
-<h1 align="center">AGENT DOCTOR</h1>
+<h1 align="center">AGENT READY</h1>
 
 <p align="center">
   Diagnose whether a repository is ready for AI coding agents.
 </p>
 
 <p align="center">
-  <a href="https://github.com/carloss765/agent-doctor">Repository</a>
+  <a href="https://github.com/carloss765/agent-ready">Repository</a>
   ·
   <a href="./docs/technical-decisions.md">Technical decisions</a>
   ·
@@ -20,7 +20,7 @@
 
 ## What It Is
 
-Agent Doctor is an open source Node.js CLI that checks whether a project has the context,
+Agent Ready is an open source Node.js CLI that checks whether a project has the context,
 commands, safety files, and setup signals that coding agents need before they start changing code.
 
 It does not provide an AI model and does not call any hosted AI service. It prepares your repository
@@ -28,7 +28,7 @@ for the agent you already use, such as Codex, Claude Code, OpenCode, Cursor, Win
 tool that can read files in your project.
 
 ```text
-agent-doctor = scanner + generator + prescription builder
+agent-ready = scanner + generator + prescription builder
 your coding agent = executor
 ```
 
@@ -43,7 +43,7 @@ context:
 - clear safety rules for secrets and destructive commands
 - a simple readiness summary before delegating work
 
-Agent Doctor finds those gaps and gives you a concrete next step instead of making your coding agent
+Agent Ready finds those gaps and gives you a concrete next step instead of making your coding agent
 guess.
 
 ## What It Checks
@@ -62,10 +62,10 @@ The current version focuses on Node.js and TypeScript projects. It scans for:
 Run it directly with `npx`:
 
 ```bash
-npx @carloss765/agent-doctor scan
+npx agent-ready scan
 ```
 
-The public package uses the scoped name `@carloss765/agent-doctor`.
+The public package uses the unscoped npm name `agent-ready`.
 
 For local development:
 
@@ -82,7 +82,7 @@ pnpm dev -- scan
 Scans the repository without modifying files.
 
 ```bash
-npx @carloss765/agent-doctor scan
+npx agent-ready scan
 ```
 
 Useful when you want to know what the repo already has and what is missing.
@@ -90,7 +90,7 @@ Useful when you want to know what the repo already has and what is missing.
 You can scan another directory with `--root`:
 
 ```bash
-npx @carloss765/agent-doctor scan --root ./path/to/project
+npx agent-ready scan --root ./path/to/project
 ```
 
 ### `init`
@@ -98,7 +98,7 @@ npx @carloss765/agent-doctor scan --root ./path/to/project
 Creates safe starter files without overwriting existing files.
 
 ```bash
-npx @carloss765/agent-doctor init
+npx agent-ready init
 ```
 
 Currently generated files:
@@ -106,19 +106,19 @@ Currently generated files:
 - `AGENTS.md`
 - `.env.example`
 
-If either file already exists, Agent Doctor skips it.
+If either file already exists, Agent Ready skips it.
 
 ### `prescribe`
 
 Creates a prescription file for your coding agent.
 
 ```bash
-npx @carloss765/agent-doctor prescribe
+npx agent-ready prescribe
 ```
 
 Generated file:
 
-- `.agent-doctor/prescription.md`
+- `.agent-ready/prescription.md`
 
 Give that file to your coding agent and ask it to apply the recommended repository setup fixes.
 
@@ -127,32 +127,32 @@ Give that file to your coding agent and ask it to apply the recommended reposito
 1. Diagnose the project:
 
 ```bash
-npx @carloss765/agent-doctor scan
+npx agent-ready scan
 ```
 
 2. Generate missing base files:
 
 ```bash
-npx @carloss765/agent-doctor init
+npx agent-ready init
 ```
 
 3. Create instructions for your coding agent:
 
 ```bash
-npx @carloss765/agent-doctor prescribe
+npx agent-ready prescribe
 ```
 
 4. Ask your agent to read the prescription:
 
 ```text
-Read .agent-doctor/prescription.md and apply the recommended repository setup fixes.
+Read .agent-ready/prescription.md and apply the recommended repository setup fixes.
 Do not modify secrets or run destructive commands.
 ```
 
 5. Re-scan after changes:
 
 ```bash
-npx @carloss765/agent-doctor scan
+npx agent-ready scan
 ```
 
 ## Commands To Test The Tool
@@ -182,15 +182,15 @@ node dist/cli.js prescribe --yes
 To test against a temporary project:
 
 ```bash
-mkdir /tmp/agent-doctor-demo
-cd /tmp/agent-doctor-demo
+mkdir /tmp/agent-ready-demo
+cd /tmp/agent-ready-demo
 pnpm init
-node /path/to/agent-doctor/dist/cli.js scan
-node /path/to/agent-doctor/dist/cli.js init --yes
-node /path/to/agent-doctor/dist/cli.js prescribe --yes
+node /path/to/agent-ready/dist/cli.js scan
+node /path/to/agent-ready/dist/cli.js init --yes
+node /path/to/agent-ready/dist/cli.js prescribe --yes
 ```
 
-Replace `/path/to/agent-doctor` with the absolute path to this repository.
+Replace `/path/to/agent-ready` with the absolute path to this repository.
 
 ## Development
 
@@ -232,7 +232,7 @@ landing/         Astro landing page
 
 ## Safety Model
 
-Agent Doctor is intentionally conservative:
+Agent Ready is intentionally conservative:
 
 - `scan` is read-only.
 - `init` does not overwrite existing files.

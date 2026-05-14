@@ -25,7 +25,7 @@ describe("initProject", () => {
         "Never commit real secrets"
       );
       await expect(readdir(root)).resolves.not.toContain(".env");
-      await expect(readdir(root)).resolves.not.toContain(".agent-doctor");
+      await expect(readdir(root)).resolves.not.toContain(".agent-ready");
     } finally {
       await rm(root, { recursive: true, force: true });
     }
@@ -73,7 +73,7 @@ describe("initProject", () => {
 });
 
 async function createTempRepository(files: Record<string, string>): Promise<string> {
-  const root = await mkdtemp(path.join(os.tmpdir(), "agent-doctor-"));
+  const root = await mkdtemp(path.join(os.tmpdir(), "agent-ready-"));
 
   await Promise.all(
     Object.entries(files).map(async ([file, content]) => {

@@ -2,9 +2,9 @@
 
 ## Purpose
 
-This document defines the functional and non-functional requirements for the Agent Doctor MVP.
+This document defines the functional and non-functional requirements for the Agent Ready MVP.
 
-Agent Doctor is a CLI that checks whether a repository is ready to be worked on by coding agents and generates safe guidance files for that repository.
+Agent Ready is a CLI that checks whether a repository is ready to be worked on by coding agents and generates safe guidance files for that repository.
 
 ## Scope
 
@@ -66,7 +66,7 @@ The CLI must provide a `scan` command that diagnoses the repository without modi
 
 Acceptance criteria:
 
-- Runs with `npx agent-doctor scan`.
+- Runs with `npx agent-ready scan`.
 - Prints a readable summary to the terminal.
 - Does not create, edit, or delete files.
 - Exits successfully when the scan completes.
@@ -77,14 +77,14 @@ The CLI must provide an `init` command that generates safe base files.
 
 Acceptance criteria:
 
-- Runs with `npx agent-doctor init`.
+- Runs with `npx agent-ready init`.
 - Creates missing base files using templates.
 - Does not overwrite existing files without user approval.
 - Can generate `AGENTS.md`.
-- Can generate `.agent-doctor/report.md`.
-- Can generate `.agent-doctor/report.json`.
-- Can generate `.agent-doctor/context.md`.
-- Can generate `.agent-doctor/prescription.md`.
+- Can generate `.agent-ready/report.md`.
+- Can generate `.agent-ready/report.json`.
+- Can generate `.agent-ready/context.md`.
+- Can generate `.agent-ready/prescription.md`.
 
 ### FR-007: Prescription Command
 
@@ -92,7 +92,7 @@ The CLI must provide a `prescribe` command that creates instructions for an exte
 
 Acceptance criteria:
 
-- Runs with `npx agent-doctor prescribe`.
+- Runs with `npx agent-ready prescribe`.
 - Generates a clear prompt or prescription file.
 - Lists the missing repository improvements.
 - Tells the external agent which files to read first.
@@ -108,7 +108,7 @@ Acceptance criteria:
 - Supports Codex output.
 - Supports Claude Code output.
 - Supports OpenCode output.
-- Names generated files clearly, for example `.agent-doctor/prescription.codex.md`.
+- Names generated files clearly, for example `.agent-ready/prescription.codex.md`.
 
 ### FR-009: Optional Agent Setup Files
 
@@ -127,7 +127,7 @@ The CLI should provide an interactive mode when run without arguments.
 
 Acceptance criteria:
 
-- Runs with `npx agent-doctor`.
+- Runs with `npx agent-ready`.
 - Scans the repository.
 - Shows detected project context.
 - Shows found and missing items.
@@ -139,8 +139,8 @@ The CLI must be able to write scan results to report files.
 
 Acceptance criteria:
 
-- Writes a human-readable report to `.agent-doctor/report.md`.
-- Writes machine-readable results to `.agent-doctor/report.json`.
+- Writes a human-readable report to `.agent-ready/report.md`.
+- Writes machine-readable results to `.agent-ready/report.json`.
 - Includes detected files, missing files, commands, project type, score, and recommendations.
 
 ### FR-012: Safety Rules Generation
@@ -172,7 +172,7 @@ The CLI may support friendly aliases after core commands are stable.
 
 Acceptance criteria:
 
-- `doctor` may alias `scan`.
+- `check` may alias `scan`.
 - `fix` may alias `prescribe`.
 - `prompt` may alias `prescribe`.
 - Aliases must not change the behavior of the base command.
@@ -294,7 +294,7 @@ The CLI must be distributable as an npm package.
 
 Acceptance criteria:
 
-- Can be executed with `npx agent-doctor`.
+- Can be executed with `npx agent-ready`.
 - Package metadata defines the CLI binary.
 - Build output includes everything needed for runtime.
 - Release process is documented before public publishing.
@@ -346,8 +346,8 @@ Acceptance criteria:
 
 ### Milestone 4: File Generation
 
-- Generate `.agent-doctor/report.md`.
-- Generate `.agent-doctor/report.json`.
+- Generate `.agent-ready/report.md`.
+- Generate `.agent-ready/report.json`.
 - Generate `AGENTS.md`.
 - Avoid overwriting files without approval.
 

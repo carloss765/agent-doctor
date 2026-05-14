@@ -4,4 +4,4 @@ coverage/
 .env
 .env.*
 !.env.example
-.agent-doctor/
+.agent-ready/

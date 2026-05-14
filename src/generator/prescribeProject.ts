@@ -5,7 +5,7 @@ import { writeIfMissing } from "./writeIfMissing.js";
 
 export async function prescribeProject(scan: ScanResult): Promise<PrescribeResult> {
   const file = await writeIfMissing(scan.root, {
-    relativePath: ".agent-doctor/prescription.md",
+    relativePath: ".agent-ready/prescription.md",
     content: renderPrescriptionMd(scan)
   });
 
@@ -18,7 +18,7 @@ export async function prescribeProject(scan: ScanResult): Promise<PrescribeResul
 function renderPrescriptionMd(scan: ScanResult): string {
   const analysis = analyzeReadiness(scan);
 
-  return `# Agent Doctor Prescription
+  return `# Agent Ready Prescription
 
 You are working inside this repository.
 

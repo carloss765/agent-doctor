@@ -1,6 +1,6 @@
-# Agent Doctor Landing
+# Agent Ready Landing
 
-Separate Astro landing page for Agent Doctor.
+Separate Astro landing page for Agent Ready.
 
 ```bash
 pnpm --dir landing install

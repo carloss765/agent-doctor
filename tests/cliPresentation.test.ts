@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { formatScanResult } from "../src/cli/formatScanResult.js";
-import { scoreBar, withProgress } from "../src/cli/presentation.js";
+import { renderHeader, scoreBar, withProgress } from "../src/cli/presentation.js";
 import type { ScanResult } from "../src/scanner/types.js";
 
 describe("CLI presentation", () => {
@@ -37,10 +37,25 @@ describe("CLI presentation", () => {
   it("shows detected and missing agent tools in scan output", () => {
     const output = formatScanResult(createScanResult(), { color: false });
 
+    expect(output).toContain("/\\  __ \\");
     expect(output).toContain("Score: 40/100 ████░░░░░░");
     expect(output).toContain("Tool use:");
     expect(output).toContain("Codex: ready AGENTS.md");
     expect(output).toContain("Cursor: missing");
+  });
+
+  it("uses a compact header when the terminal is too narrow for ASCII art", () => {
+    const header = renderHeader({ color: false, terminalColumns: 50 });
+
+    expect(header).toEqual(["AGENT READY", "Repository readiness for coding agents."]);
+    expect(header.every((line) => line.length <= 50)).toBe(true);
+  });
+
+  it("shortens the header subtitle for very narrow terminals", () => {
+    const header = renderHeader({ color: false, terminalColumns: 30 });
+
+    expect(header).toEqual(["AGENT READY", "Repo readiness for agents."]);
+    expect(header.every((line) => line.length <= 30)).toBe(true);
   });
 });
 

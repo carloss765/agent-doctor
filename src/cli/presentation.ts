@@ -1,5 +1,6 @@
 export type PresentationOptions = {
   color?: boolean;
+  terminalColumns?: number;
 };
 
 type ProgressOptions = PresentationOptions & {
@@ -19,30 +20,35 @@ const clearLine = "\u001b[2K";
 
 const spinnerFrames = ["   ", ".  ", ".. ", "..."];
 
+const asciiLogo = [
+  " ______     ______     ______     __   __     ______     ______     ______     ______     _____     __  __    ",
+  '/\\  __ \\   /\\  ___\\   /\\  ___\\   /\\ "-.\\ \\   /\\__  _\\   /\\  == \\   /\\  ___\\   /\\  __ \\   /\\  __-.  /\\ \\_\\ \\   ',
+  "\\ \\  __ \\  \\ \\ \\__ \\  \\ \\  __\\   \\ \\ \\-.  \\  \\/_/\\ \\/   \\ \\  __<   \\ \\  __\\   \\ \\  __ \\  \\ \\ \\/\\ \\ \\ \\____ \\  ",
+  ' \\ \\_\\ \\_\\  \\ \\_____\\  \\ \\_____\\  \\ \\_\\\\"\\_\\    \\ \\_\\    \\ \\_\\ \\_\\  \\ \\_____\\  \\ \\_\\ \\_\\  \\ \\____-  \\/\\_____\\ ',
+  "  \\/_/\\/_/   \\/_____/   \\/_____/   \\/_/ \\/_/     \\/_/     \\/_/ /_/   \\/_____/   \\/_/\\/_/   \\/____/   \\/_____/"
+];
+
+const compactLogo = ["AGENT READY"];
+const fullLogoMinColumns = Math.max(...asciiLogo.map((line) => line.length));
+
 export function shouldUseColor(): boolean {
   return Boolean(process.stdout.isTTY) && process.env.NO_COLOR === undefined;
 }
 
 export function renderHeader(options: PresentationOptions = {}): string[] {
   const color = options.color ?? false;
-  const logo = [
-    "  ___                    _     ___          _             ",
-    " / _ \\  __ _  ___ _ __ | |_  /   \\___  ___| |_ ___  _ __ ",
-    "/ /_)/ / _` |/ _ \\ '_ \\| __|/ /\\ / _ \\/ __| __/ _ \\| '__|",
-    "/ ___/ | (_| |  __/ | | | |_/ /_// (_) \\__ \\ || (_) | |   ",
-    "\\/      \\__, |\\___|_| |_|\\__/___,' \\___/|___/\\__\\___/|_|   ",
-    "        |___/                                             "
-  ];
+  const terminalColumns = options.terminalColumns ?? process.stdout.columns ?? fullLogoMinColumns;
+  const logo = terminalColumns >= fullLogoMinColumns ? asciiLogo : compactLogo;
+  const subtitle =
+    terminalColumns >= 40
+      ? "Repository readiness for coding agents."
+      : "Repo readiness for agents.";
 
-  return [
-    ...logo.map((line) => paint(line, cyan, color)),
-    paint("Agent Doctor", bold, color),
-    paint("Repository readiness for coding agents.", dim, color)
-  ];
+  return [...logo.map((line) => paint(line, cyan, color)), paint(subtitle, dim, color)];
 }
 
 export function renderTitle(options: PresentationOptions = {}): string {
-  return paint("Agent Doctor", bold, options.color ?? false);
+  return renderHeader(options).join("\n");
 }
 
 export function heading(value: string, options: PresentationOptions = {}): string {

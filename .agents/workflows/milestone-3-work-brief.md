@@ -2,7 +2,7 @@
 
 ## Goal
 
-Add the first analyzer layer for Agent Doctor: convert `ScanResult` into deterministic readiness findings, score, status, and next-step recommendations.
+Add the first analyzer layer for Agent Ready: convert `ScanResult` into deterministic readiness findings, score, status, and next-step recommendations.
 
 ## User Value
 
@@ -25,7 +25,7 @@ Users should understand how ready a repository is for coding agents, not only wh
 ## Non-Goals
 
 - No `init` command.
-- No `.agent-doctor/report.md` or `.agent-doctor/report.json` writing.
+- No `.agent-ready/report.md` or `.agent-ready/report.json` writing.
 - No `prescribe` command.
 - No interactive mode.
 - No framework detection.
@@ -77,4 +77,4 @@ Total: `100`.
 - Run `pnpm check`.
 - Run `pnpm format:check`.
 - Run `node dist/cli.js scan`.
-- Confirm `scan` does not create `.agent-doctor/`.
+- Confirm `scan` does not create `.agent-ready/`.

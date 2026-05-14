@@ -2,12 +2,12 @@
 
 ## Goal
 
-Implement `agent-doctor prescribe` to generate a prompt-style prescription for an external coding agent.
+Implement `agent-ready prescribe` to generate a prompt-style prescription for an external coding agent.
 
 ## Scope
 
 - Add `prescribe` command.
-- Generate `.agent-doctor/prescription.md`.
+- Generate `.agent-ready/prescription.md`.
 - Use scanner and analyzer output.
 - Include score, status, found files, missing files, detected scripts, missing scripts, next steps, and safety rules.
 - Do not overwrite an existing prescription by default.
@@ -25,8 +25,8 @@ Implement `agent-doctor prescribe` to generate a prompt-style prescription for a
 
 - `pnpm test` passes.
 - `pnpm check` passes.
-- `prescribe` creates `.agent-doctor/prescription.md` when missing.
-- `prescribe` skips existing `.agent-doctor/prescription.md`.
+- `prescribe` creates `.agent-ready/prescription.md` when missing.
+- `prescribe` skips existing `.agent-ready/prescription.md`.
 - Output separates `Created`, `Skipped`, and `Next steps`.
 - Generated content is deterministic for equivalent repositories.
 - The command does not modify unrelated files.

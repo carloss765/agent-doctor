@@ -33,7 +33,7 @@ export function formatPrescribeResult(
       options
     ),
     heading("Next steps:", options),
-    "  - Give .agent-doctor/prescription.md to your coding agent.",
+    "  - Give .agent-ready/prescription.md to your coding agent.",
     "  - Review the prescription before asking an agent to change code."
   ].join("\n");
 }

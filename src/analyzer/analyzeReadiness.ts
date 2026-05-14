@@ -76,7 +76,7 @@ function createNextSteps(scan: ScanResult, score: number): string[] {
   }
 
   if (scan.missing.length > 0) {
-    nextSteps.push("Run agent-doctor init to generate missing base files.");
+    nextSteps.push("Run agent-ready init to generate missing base files.");
   }
 
   if (scan.missingScripts.length > 0) {

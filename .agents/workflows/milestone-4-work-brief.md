@@ -2,7 +2,7 @@
 
 ## Goal
 
-Implement `agent-doctor init` as a small, safe file-generation command.
+Implement `agent-ready init` as a small, safe file-generation command.
 
 The command should prepare missing base files for coding agents without overwriting existing user work.
 
@@ -25,7 +25,7 @@ The command should prepare missing base files for coding agents without overwrit
 - No `package.json` modification.
 - No dependency installation.
 - No CI generation.
-- No `.agent-doctor/report.md` or `.agent-doctor/report.json` generation.
+- No `.agent-ready/report.md` or `.agent-ready/report.json` generation.
 - No scoring changes.
 - No external AI or hosted services.
 

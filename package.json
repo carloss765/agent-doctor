@@ -1,18 +1,18 @@
 {
-  "name": "@carloss765/agent-doctor",
+  "name": "agent-ready",
   "version": "0.1.0",
   "description": "CLI that checks whether a repository is ready for coding agents.",
   "type": "module",
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/carloss765/agent-doctor.git"
+    "url": "git+ssh://git@github.com/carloss765/agent-ready.git"
   },
   "bugs": {
-    "url": "https://github.com/carloss765/agent-doctor/issues"
+    "url": "https://github.com/carloss765/agent-ready/issues"
   },
-  "homepage": "https://github.com/carloss765/agent-doctor#readme",
+  "homepage": "https://github.com/carloss765/agent-ready#readme",
   "bin": {
-    "agent-doctor": "./dist/cli.js"
+    "agent-ready": "./dist/cli.js"
   },
   "files": [
     "dist",

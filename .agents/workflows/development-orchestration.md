@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This workflow defines how specialized subagents collaborate during Agent Doctor development.
+This workflow defines how specialized subagents collaborate during Agent Ready development.
 
 The goal is to keep work coordinated without creating unnecessary process. Each role owns a clear part of the delivery flow and communicates through concise handoffs.
 
