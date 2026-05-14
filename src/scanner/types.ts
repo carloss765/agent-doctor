@@ -19,6 +19,20 @@ export type NodeScript = {
   command: string;
 };
 
+export type AgentToolName = "Codex" | "Claude Code" | "OpenCode" | "Cursor" | "Windsurf";
+
+export type AgentToolSignal = {
+  name: AgentToolName;
+  detected: boolean;
+  files: string[];
+};
+
+export type SkillSignal = {
+  directory: string;
+  detected: boolean;
+  count: number;
+};
+
 export type ScanResult = {
   root: string;
   packageManager: PackageManager;
@@ -27,6 +41,8 @@ export type ScanResult = {
   manifests: ProjectManifest[];
   scripts: NodeScript[];
   missingScripts: NodeScriptName[];
+  agentTools: AgentToolSignal[];
+  skills: SkillSignal[];
   found: RepositorySignal[];
   missing: RepositorySignal[];
 };
