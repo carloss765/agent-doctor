@@ -707,7 +707,7 @@ Así como muchos proyectos tienen linters, formatters y checkers de salud, Agent
 
 ## Estado de implementación
 
-El Milestone 1 ya incluye un scaffold inicial de CLI en TypeScript y el comando read-only `scan`.
+El proyecto ya incluye un scaffold inicial de CLI en TypeScript y el comando read-only `scan`.
 
 Comandos de desarrollo:
 
@@ -722,3 +722,9 @@ pnpm check
 ```
 
 El comando `scan` revisa señales iniciales del repositorio sin crear, modificar ni eliminar archivos.
+
+Estado actual:
+
+- Milestone 1: scaffold CLI, scripts, tests, build y CI.
+- Milestone 2: scanner estructurado con archivos base, Git, lockfile y scripts Node.
+- Milestone 3: analyzer con readiness score, status y next steps.

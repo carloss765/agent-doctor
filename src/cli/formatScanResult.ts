@@ -1,6 +1,8 @@
+import { analyzeReadiness } from "../analyzer/analyzeReadiness.js";
 import type { ScanResult } from "../scanner/types.js";
 
 export function formatScanResult(result: ScanResult): string {
+  const analysis = analyzeReadiness(result);
   const lines = [
     "Agent Doctor",
     "",
@@ -11,6 +13,10 @@ export function formatScanResult(result: ScanResult): string {
     `  Git: ${result.gitDetected ? "detected" : "not detected"}`,
     `  Package manager: ${result.packageManager}`,
     `  Project manifest: ${formatInlineList(result.manifests)}`,
+    "",
+    "Agent readiness:",
+    `  Score: ${analysis.score}/100`,
+    `  Status: ${analysis.status}`,
     "",
     formatList(
       "Found",
@@ -26,7 +32,7 @@ export function formatScanResult(result: ScanResult): string {
     ),
     formatList("Missing scripts", result.missingScripts),
     "Next steps:",
-    ...formatNextSteps(result)
+    ...analysis.nextSteps.map((step) => `  - ${step}`)
   ];
 
   return lines.join("\n");
@@ -41,22 +47,4 @@ function formatList(title: string, items: string[]): string {
 
 function formatInlineList(items: string[]): string {
   return items.length > 0 ? items.join(", ") : "not detected";
-}
-
-function formatNextSteps(result: ScanResult): string[] {
-  if (result.missing.length === 0 && result.missingScripts.length === 0) {
-    return ["  - This repository has the basic files needed for coding agents."];
-  }
-
-  const steps: string[] = [];
-
-  if (result.missing.length > 0) {
-    steps.push("  - Run agent-doctor init to generate missing base files.");
-  }
-
-  if (result.missingScripts.length > 0) {
-    steps.push("  - Add missing validation scripts before delegating work to coding agents.");
-  }
-
-  return steps;
 }
