@@ -741,3 +741,10 @@ pnpm dev -- scan
 pnpm dev -- init --yes
 pnpm dev -- prescribe --yes
 ```
+
+Public npm usage should use the scoped package name because `agent-doctor` is already occupied on npm:
+
+```bash
+npx @carloss765/agent-doctor
+npx @carloss765/agent-doctor scan
+```
