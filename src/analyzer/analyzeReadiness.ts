@@ -23,7 +23,8 @@ export function analyzeReadiness(scan: ScanResult): ReadinessAnalysis {
 function createFindings(scan: ScanResult): ReadinessFinding[] {
   return [
     createFinding("README.md", 10, hasFoundSignal(scan, "README.md")),
-    createFinding("AGENTS.md", 20, hasFoundSignal(scan, "AGENTS.md")),
+    createFinding("AGENTS.md", 15, hasFoundSignal(scan, "AGENTS.md")),
+    createFinding("DESIGN.md", 10, hasFoundSignal(scan, "DESIGN.md")),
     createFinding(".env.example", 10, hasFoundSignal(scan, ".env.example")),
     createFinding("Project manifest", 10, scan.manifests.length > 0),
     createFinding("Git repository", 5, scan.gitDetected),
@@ -31,7 +32,7 @@ function createFindings(scan: ScanResult): ReadinessFinding[] {
     createFinding("dev script", 5, hasScript(scan, "dev")),
     createFinding("build script", 10, hasScript(scan, "build")),
     createFinding("test script", 10, hasScript(scan, "test")),
-    createFinding("lint script", 10, hasScript(scan, "lint")),
+    createFinding("lint script", 5, hasScript(scan, "lint")),
     createFinding("format script", 5, hasScript(scan, "format"))
   ];
 }

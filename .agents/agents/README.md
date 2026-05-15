@@ -8,6 +8,7 @@ Use these files when assigning project work:
 
 - [Project Manager](project-manager.md): scopes milestones, acceptance criteria, and release risk.
 - [Product Designer](product-designer.md): owns CLI experience, generated copy, report structure, and landing-page UX.
+- [Marketing](marketing.md): owns launch positioning, social copy, demo framing, and public claims.
 - [Developer](developer.md): implements scanner, analyzer, generator, prescription, and CLI changes.
 - [DevOps Engineer](devops-engineer.md): owns package scripts, CI, npm publishing readiness, and operational safety.
 - [QA](qa.md): validates CLI behavior, generated files, scoring, and regression coverage.

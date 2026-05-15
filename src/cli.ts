@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import { Command } from "commander";
 
+import { formatCommandList } from "./cli/formatCommandList.js";
 import { formatInitResult } from "./cli/formatInitResult.js";
 import { formatPrescribeResult } from "./cli/formatPrescribeResult.js";
 import { formatScanResult } from "./cli/formatScanResult.js";
@@ -16,9 +17,8 @@ program
   .name("agent-ready")
   .description("Check whether a repository is ready for coding agents.")
   .version("0.1.0")
-  .option("-r, --root <path>", "Repository root to scan.", process.cwd())
-  .action(async () => {
-    await runScan(getRootOption());
+  .action(() => {
+    console.log(formatCommandList({ color: shouldUseColor() }));
   });
 
 program
@@ -31,7 +31,7 @@ program
 
 program
   .command("prescribe")
-  .description("Generate a prescription prompt for an external coding agent.")
+  .description("Generate a prescription prompt for the coding agent you already use.")
   .option("-r, --root <path>", "Repository root to inspect.", process.cwd())
   .option("--yes", "Run non-interactively.")
   .action(async () => {

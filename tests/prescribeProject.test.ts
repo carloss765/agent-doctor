@@ -27,6 +27,8 @@ describe("prescribeProject", () => {
       expect(prescription).toContain("## Missing Files");
       expect(prescription).toContain("## Missing Scripts");
       expect(prescription).toContain("## Recommended Next Steps");
+      expect(prescription).toContain("## AGENTS.md Refinement Task");
+      expect(prescription).toContain("Do not invent project details");
     } finally {
       await rm(root, { recursive: true, force: true });
     }

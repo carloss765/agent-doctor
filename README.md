@@ -52,6 +52,7 @@ The current version focuses on Node.js and TypeScript projects. It scans for:
 
 - repository basics: Git, manifests, package manager, lockfile
 - context files: `README.md`, `AGENTS.md`, `.env.example`
+- product design context: `DESIGN.md`
 - scripts: `dev`, `build`, `test`, `lint`, `format`
 - agent tooling signals: Codex, Claude Code, OpenCode, Cursor, Windsurf
 - local skills under `.agents/skills`
@@ -76,6 +77,16 @@ pnpm dev -- scan
 ```
 
 ## Commands
+
+### Root command
+
+Shows the available commands and the recommended workflow without scanning or modifying files.
+
+```bash
+npx @agent-ready/cli
+```
+
+Agent Ready is not powered by an AI model. Commands are explicit and local-first: use `scan`, `init`, or `prescribe` when you want those actions.
 
 ### `scan`
 
@@ -104,9 +115,10 @@ npx @agent-ready/cli init
 Currently generated files:
 
 - `AGENTS.md`
+- `DESIGN.md`
 - `.env.example`
 
-If either file already exists, Agent Ready skips it.
+If any generated file already exists, Agent Ready skips it.
 
 ### `prescribe`
 
@@ -174,6 +186,7 @@ After building, you can test the compiled CLI:
 
 ```bash
 pnpm build
+node dist/cli.js
 node dist/cli.js scan
 node dist/cli.js init --yes
 node dist/cli.js prescribe --yes
@@ -239,6 +252,7 @@ Agent Ready is intentionally conservative:
 - `prescribe` does not overwrite an existing prescription.
 - no API keys are required.
 - no model provider account is required.
+- `DESIGN.md` is a prompt and context template for your own coding agent; Agent Ready does not complete it with AI.
 - generated instructions warn agents not to modify secrets or run destructive commands.
 
 ## Current Status

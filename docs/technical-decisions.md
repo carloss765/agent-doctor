@@ -14,7 +14,7 @@ The MVP should:
 
 - Scan a repository.
 - Detect missing agent-readiness files and documentation.
-- Generate safe base files.
+- Generate safe base files, including product/UX context starters such as `DESIGN.md`.
 - Produce clear prescriptions for external coding agents.
 
 The MVP should not:
