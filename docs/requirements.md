@@ -22,6 +22,7 @@ Acceptance criteria:
 
 - Detects whether `README.md` exists.
 - Detects whether `AGENTS.md` exists.
+- Detects whether `DESIGN.md` exists.
 - Detects whether `.env.example` exists.
 - Detects whether Git is enabled.
 - Detects common project files such as `package.json`, `pyproject.toml`, `Cargo.toml`, and similar manifests.
@@ -81,6 +82,7 @@ Acceptance criteria:
 - Creates missing base files using templates.
 - Does not overwrite existing files without user approval.
 - Can generate `AGENTS.md`.
+- Can generate `DESIGN.md` as a deterministic product/UX context starter with a prompt for the user's coding agent.
 - Can generate `.agent-ready/report.md`.
 - Can generate `.agent-ready/report.json`.
 - Can generate `.agent-ready/context.md`.
@@ -121,17 +123,17 @@ Acceptance criteria:
 - Can generate `opencode.jsonc` for OpenCode.
 - Does not generate agent-specific files unless requested by command or option.
 
-### FR-010: Interactive Mode
+### FR-010: Root Command Directory
 
-The CLI should provide an interactive mode when run without arguments.
+The CLI should show a simple command directory when run without arguments.
 
 Acceptance criteria:
 
 - Runs with `npx @agent-ready/cli`.
-- Scans the repository.
-- Shows detected project context.
-- Shows found and missing items.
-- Offers actions such as scan, init, prescribe, export report, and exit.
+- Lists available commands such as `scan`, `init`, and `prescribe`.
+- Shows the recommended workflow without scanning or modifying files.
+- Clarifies that Agent Ready is local-first and does not run an AI model.
+- Keeps actions explicit; users must run a subcommand to scan, initialize, prescribe, or export.
 
 ### FR-011: Report Export
 
@@ -163,6 +165,7 @@ Acceptance criteria:
 
 - Templates are easy to inspect and test.
 - Generated content uses repository scan data when available.
+- Generated `DESIGN.md` asks the user's coding agent to complete design context from repository evidence and to label unknowns instead of inventing product facts.
 - Missing values are labeled clearly.
 - Template output is deterministic for the same scan input.
 

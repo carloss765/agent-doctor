@@ -38,7 +38,7 @@ describe("scanRepository", () => {
         "Git repository",
         "Package manager lockfile: pnpm-lock.yaml"
       ]);
-      expect(labels(result.missing)).toEqual(["AGENTS.md", ".env.example"]);
+      expect(labels(result.missing)).toEqual(["AGENTS.md", "DESIGN.md", ".env.example"]);
     } finally {
       await rm(root, { recursive: true, force: true });
     }
@@ -60,6 +60,7 @@ describe("scanRepository", () => {
       expect(labels(result.missing)).toEqual([
         "README.md",
         "AGENTS.md",
+        "DESIGN.md",
         ".env.example",
         "package.json",
         "Git repository",
@@ -74,6 +75,7 @@ describe("scanRepository", () => {
     const root = await createTempRepository({
       "README.md": "# Test Project",
       "AGENTS.md": "# Instructions",
+      "DESIGN.md": "# Design",
       ".env.example": "TEST_VALUE=",
       "package.json": JSON.stringify({
         scripts: {
@@ -103,6 +105,7 @@ describe("scanRepository", () => {
       expect(labels(result.found)).toEqual([
         "README.md",
         "AGENTS.md",
+        "DESIGN.md",
         ".env.example",
         "package.json",
         "Git repository",

@@ -67,6 +67,18 @@ ${renderList(scan.skills.filter((skill) => skill.detected).map((skill) => `${ski
 
 ${renderList(analysis.nextSteps)}
 
+## AGENTS.md Refinement Task
+
+If \`AGENTS.md\` is missing, run \`agent-ready init\` first. Then refine \`AGENTS.md\` using local
+project context.
+
+- Read \`README.md\`, \`package.json\`, existing docs, and the main source folders.
+- Replace generic placeholder text with an accurate project-specific overview.
+- Keep detected commands aligned with the actual scripts in \`package.json\`.
+- Add practical notes about architecture, testing, generated files, and risky areas.
+- Preserve safety rules about secrets, destructive commands, and focused changes.
+- Do not invent project details that are not supported by files in the repository.
+
 ## Safety Rules
 
 - Do not modify secrets, credentials, tokens, private keys, or local environment files.

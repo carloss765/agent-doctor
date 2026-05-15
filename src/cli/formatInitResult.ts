@@ -31,6 +31,7 @@ export function formatInitResult(result: InitResult, options: PresentationOption
     ),
     heading("Next steps:", options),
     "  - Review AGENTS.md and adapt it to your team workflow.",
+    "  - Review DESIGN.md and complete the product, UX, copy, accessibility, and edge-state notes.",
     "  - Run agent-ready scan to confirm repository readiness."
   ].join("\n");
 }

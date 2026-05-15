@@ -20,7 +20,13 @@ const manifestFiles: ProjectManifest[] = [
   "composer.json"
 ];
 
-const requiredFiles = ["README.md", "AGENTS.md", ".env.example", "package.json"] as const;
+const requiredFiles = [
+  "README.md",
+  "AGENTS.md",
+  "DESIGN.md",
+  ".env.example",
+  "package.json"
+] as const;
 const nodeScriptNames: NodeScriptName[] = ["dev", "build", "test", "lint", "format"];
 
 const packageManagerFiles: Array<{ label: string; manager: PackageManager }> = [

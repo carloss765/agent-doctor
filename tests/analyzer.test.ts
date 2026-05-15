@@ -19,6 +19,7 @@ describe("analyzeReadiness", () => {
       expect(missingFindingLabels(analysis.findings)).toEqual([
         "README.md",
         "AGENTS.md",
+        "DESIGN.md",
         ".env.example",
         "Project manifest",
         "Git repository",
@@ -68,7 +69,7 @@ describe("analyzeReadiness", () => {
     try {
       const analysis = analyzeReadiness(await scanRepository(root));
 
-      expect(analysis.score).toBe(70);
+      expect(analysis.score).toBe(65);
       expect(analysis.status).toBe("Almost ready");
     } finally {
       await rm(root, { recursive: true, force: true });
@@ -79,6 +80,7 @@ describe("analyzeReadiness", () => {
     const root = await createTempRepository({
       "README.md": "# Test Project",
       "AGENTS.md": "# Instructions",
+      "DESIGN.md": "# Design",
       ".env.example": "TEST_VALUE=",
       "package.json": JSON.stringify({
         scripts: {
@@ -108,6 +110,7 @@ describe("analyzeReadiness", () => {
     const root = await createTempRepository({
       "README.md": "# Test Project",
       "AGENTS.md": "# Instructions",
+      "DESIGN.md": "# Design",
       ".env.example": "TEST_VALUE=",
       "package.json": JSON.stringify({
         scripts: {
