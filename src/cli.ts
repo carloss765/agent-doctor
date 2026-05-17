@@ -18,7 +18,7 @@ import { formatScanReportJson } from "./reporter/formatScanReportJson.js";
 import { scanRepository } from "./scanner/scanRepository.js";
 
 const program = new Command();
-const toolVersion = "0.1.0";
+const toolVersion = "0.2.0";
 
 type ScanCommandOptions = {
   ci?: boolean;

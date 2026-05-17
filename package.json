@@ -1,6 +1,6 @@
 {
   "name": "@agent-ready/cli",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "CLI that checks whether a repository is ready for coding agents.",
   "type": "module",
   "repository": {
