@@ -26,6 +26,9 @@ describe("CLI presentation", () => {
     expect(output).toContain("Recommended workflow:\n  1. agent-ready scan\n  2. agent-ready init");
     expect(output).toContain("Command options:");
     expect(output).toContain("-r, --root <path>  Repository root for scan, init, or prescribe.");
+    expect(output).toContain("--ci              Run scan in non-interactive CI mode.");
+    expect(output).toContain("--json            Print stable JSON for scan.");
+    expect(output).toContain("--min-score <n>   Fail CI mode when readiness score is below n.");
   });
 
   it("renders score bars without color by default", () => {
@@ -62,9 +65,9 @@ describe("CLI presentation", () => {
 
     expect(output).toContain("/\\  __ \\");
     expect(output).toContain("Score: 40/100 ████░░░░░░");
-    expect(output).toContain("Tool use:");
-    expect(output).toContain("Codex: ready AGENTS.md");
-    expect(output).toContain("Cursor: missing");
+    expect(output).toContain("Agent tool configs:");
+    expect(output).toContain("Codex: configured AGENTS.md");
+    expect(output).toContain("Cursor: not configured");
   });
 
   it("shows DESIGN.md created and skipped states in init output", () => {

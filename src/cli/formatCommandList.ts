@@ -23,6 +23,9 @@ export function formatCommandList(options: PresentationOptions = {}): string {
     "",
     "Command options:",
     "  -r, --root <path>  Repository root for scan, init, or prescribe.",
+    "  --ci              Run scan in non-interactive CI mode.",
+    "  --json            Print stable JSON for scan.",
+    "  --min-score <n>   Fail CI mode when readiness score is below n.",
     "  -h, --help         Display help.",
     "  -V, --version      Display version."
   ].join("\n");

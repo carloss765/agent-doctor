@@ -98,6 +98,21 @@ npx @agent-ready/cli scan
 
 Useful when you want to know what the repo already has and what is missing.
 
+For machine-readable output, print the stable JSON report:
+
+```bash
+npx @agent-ready/cli scan --json
+```
+
+For pull requests or CI pipelines, run a non-interactive readiness gate:
+
+```bash
+npx @agent-ready/cli scan --ci --min-score 80
+```
+
+`--ci` does not run project commands. It only scans local files and exits non-zero when the
+repository score is below the configured minimum.
+
 You can scan another directory with `--root`:
 
 ```bash
@@ -174,6 +189,8 @@ From this repository:
 ```bash
 pnpm install
 pnpm dev -- scan
+pnpm dev -- scan --json
+pnpm dev -- scan --ci --min-score 80
 pnpm dev -- init --yes
 pnpm dev -- prescribe --yes
 pnpm test
@@ -188,6 +205,8 @@ After building, you can test the compiled CLI:
 pnpm build
 node dist/cli.js
 node dist/cli.js scan
+node dist/cli.js scan --json
+node dist/cli.js scan --ci --min-score 80
 node dist/cli.js init --yes
 node dist/cli.js prescribe --yes
 ```
@@ -261,6 +280,8 @@ Implemented:
 
 - TypeScript CLI scaffold
 - `scan`, `init`, and `prescribe` commands
+- stable JSON output for `scan --json`
+- CI-friendly scan mode with `--ci --min-score`
 - readiness analyzer and score
 - Node.js project signal detection
 - package manager and script detection
@@ -271,8 +292,6 @@ Implemented:
 Planned:
 
 - richer framework detection
-- stable JSON report output
-- CI-friendly mode
 - adapter-specific prescriptions for Codex, Claude Code, and OpenCode
 - broader language support beyond Node.js
 

@@ -14,7 +14,7 @@ export function analyzeReadiness(scan: ScanResult): ReadinessAnalysis {
 
   return {
     score,
-    status: getReadinessStatus(score),
+    status: getReadinessStatus(scan, score),
     findings,
     nextSteps: createNextSteps(scan, score)
   };
@@ -49,9 +49,11 @@ function hasScript(scan: ScanResult, scriptName: string): boolean {
   return scan.scripts.some((script) => script.name === scriptName);
 }
 
-function getReadinessStatus(score: number): ReadinessStatus {
+function getReadinessStatus(scan: ScanResult, score: number): ReadinessStatus {
   if (score >= 80) {
-    return "Ready";
+    return scan.missing.length === 0 && scan.missingScripts.length === 0
+      ? "Ready"
+      : "Ready with gaps";
   }
 
   if (score >= 50) {

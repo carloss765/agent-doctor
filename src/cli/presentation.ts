@@ -101,10 +101,10 @@ export function toolItem(
   detected: boolean,
   options: PresentationOptions = {}
 ): string {
-  const status = detected ? success("ready", options) : warning("missing", options);
+  const status = detected ? success("configured", options) : muted("not configured", options);
   const suffix = details.length > 0 ? muted(` ${details}`, options) : "";
 
-  return `  ${detected ? success("✓", options) : warning("-", options)} ${name}: ${status}${suffix}`;
+  return `  ${detected ? success("✓", options) : muted("-", options)} ${name}: ${status}${suffix}`;
 }
 
 export function scoreBar(score: number, options: PresentationOptions = {}): string {

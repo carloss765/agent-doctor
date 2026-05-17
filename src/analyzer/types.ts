@@ -1,4 +1,9 @@
-export type ReadinessStatus = "Ready" | "Almost ready" | "Needs setup" | "Not ready";
+export type ReadinessStatus =
+  | "Ready"
+  | "Ready with gaps"
+  | "Almost ready"
+  | "Needs setup"
+  | "Not ready";
 
 export type ReadinessFinding = {
   label: string;
