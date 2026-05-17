@@ -1,0 +1,137 @@
+---
+import "../styles/global.css";
+
+const commands = [
+  {
+    command: "npx @agent-ready/cli",
+    description: "Show the command directory and recommended workflow without scanning."
+  },
+  {
+    command: "npx @agent-ready/cli scan",
+    description: "Scan the current repository without modifying files."
+  },
+  {
+    command: "npx @agent-ready/cli scan --json",
+    description: "Print the scan result as stable machine-readable JSON."
+  },
+  {
+    command: "npx @agent-ready/cli scan --ci --min-score 80",
+    description: "Run a non-interactive readiness gate for pull requests and CI."
+  },
+  {
+    command: "npx @agent-ready/cli scan --root ./path/to/project",
+    description: "Scan another repository path without changing files."
+  },
+  {
+    command: "npx @agent-ready/cli init",
+    description: "Create missing starter files without overwriting existing files."
+  },
+  {
+    command: "npx @agent-ready/cli init --yes",
+    description: "Run init non-interactively with the same safe write behavior."
+  },
+  {
+    command: "npx @agent-ready/cli prescribe",
+    description: "Create a prescription prompt for the coding agent you already use."
+  },
+  {
+    command: "npx @agent-ready/cli prescribe --yes",
+    description: "Run prescribe non-interactively without overwriting an existing prescription."
+  }
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Copy Agent Ready CLI commands for scan, init, prescribe, and JSON output."
+    />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>Commands | AGENT READY</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Agent Ready home">
+        <img class="brand-mark" src="/favicon.svg" alt="" aria-hidden="true" />
+        AGENT READY
+      </a>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="/commands/" aria-current="page">Commands</a>
+        <a href="/#workflow">Workflow</a>
+        <a href="/#checks">Checks</a>
+      </nav>
+      <div class="header-actions">
+        <a class="header-github" href="https://github.com/carloss765/agent-ready">GitHub</a>
+        <a class="header-command-link" href="/commands/" aria-current="page">Commands</a>
+        <a href="/#credits">Built by Carlos</a>
+      </div>
+    </header>
+
+    <main id="main-content">
+      <section class="section command-page" aria-labelledby="commands-title">
+        <div class="section-heading">
+          <p class="eyebrow">Command reference</p>
+          <h1 id="commands-title">Agent Ready commands.</h1>
+          <p>
+            Copy the exact command you need. Every command runs locally, and `scan` does not modify
+            files.
+          </p>
+        </div>
+
+        <p class="copy-status command-copy-status" id="copy-status" aria-live="polite"></p>
+
+        <div class="command-table-wrap">
+          <table class="command-table">
+            <caption>
+              Agent Ready command reference
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col">Command</th>
+                <th scope="col">Description</th>
+                <th scope="col">Copy</th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                commands.map(({ command, description }) => (
+                  <tr>
+                    <td data-label="Command">
+                      <code>{command}</code>
+                    </td>
+                    <td data-label="Description">{description}</td>
+                    <td data-label="Copy">
+                      <button
+                        class="copy-button table-copy-button"
+                        type="button"
+                        data-copy-command={command}
+                        aria-label={`Copy command: ${command}`}
+                        aria-describedby="copy-status"
+                      >
+                        Copy
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              }
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>Agent Ready by Carlos</span>
+      <a href="https://github.com/carloss765/agent-ready">GitHub repository</a>
+    </footer>
+
+    <script>
+      import "../scripts/copy-command";
+    </script>
+  </body>
+</html>
