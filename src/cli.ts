@@ -4,19 +4,32 @@ import { Command } from "commander";
 import { formatCommandList } from "./cli/formatCommandList.js";
 import { formatInitResult } from "./cli/formatInitResult.js";
 import { formatPrescribeResult } from "./cli/formatPrescribeResult.js";
+import {
+  evaluateScanCiResult,
+  formatScanCiResult,
+  parseMinimumScoreOption
+} from "./cli/formatScanCiResult.js";
 import { formatScanResult } from "./cli/formatScanResult.js";
 import { parseRootOption } from "./cli/parseRootOption.js";
 import { shouldUseColor, withProgress } from "./cli/presentation.js";
 import { initProject } from "./generator/initProject.js";
 import { prescribeProject } from "./generator/prescribeProject.js";
+import { formatScanReportJson } from "./reporter/formatScanReportJson.js";
 import { scanRepository } from "./scanner/scanRepository.js";
 
 const program = new Command();
+const toolVersion = "0.2.0";
+
+type ScanCommandOptions = {
+  ci?: boolean;
+  json?: boolean;
+  minScore?: string;
+};
 
 program
   .name("agent-ready")
   .description("Check whether a repository is ready for coding agents.")
-  .version("0.1.0")
+  .version(toolVersion)
   .action(() => {
     console.log(formatCommandList({ color: shouldUseColor() }));
   });
@@ -25,8 +38,15 @@ program
   .command("scan")
   .description("Scan the current repository without modifying files.")
   .option("-r, --root <path>", "Repository root to scan.", process.cwd())
-  .action(async () => {
-    await runScan(getRootOption());
+  .option("--ci", "Run in non-interactive CI mode.")
+  .option("--json", "Print stable machine-readable JSON.")
+  .option("--min-score <score>", "Fail CI mode when readiness score is below this value.")
+  .action(async (options: ScanCommandOptions) => {
+    await runScan(getRootOption(), {
+      ci: options.ci ?? false,
+      json: options.json ?? false,
+      minScore: options.minScore
+    });
   });
 
 program
@@ -99,13 +119,33 @@ program.parseAsync(process.argv).catch((error: unknown) => {
   process.exitCode = 1;
 });
 
-async function runScan(root: string): Promise<void> {
+async function runScan(root: string, options: ScanCommandOptions = {}): Promise<void> {
   try {
-    const color = shouldUseColor();
-    const result = await withProgress("Scanning repository...", async () => scanRepository(root), {
-      color
-    });
-    console.log(formatScanResult(result, { color }));
+    const minimumScore = parseMinimumScoreOption(options.minScore);
+
+    if (minimumScore !== null && options.ci !== true) {
+      throw new Error("--min-score can only be used with --ci.");
+    }
+
+    const color = options.ci === true || options.json === true ? false : shouldUseColor();
+    const result =
+      options.json === true || options.ci === true
+        ? await scanRepository(root)
+        : await withProgress("Scanning repository...", async () => scanRepository(root), {
+            color
+          });
+
+    console.log(
+      options.json === true
+        ? formatScanReportJson(result, { toolVersion })
+        : options.ci === true
+          ? formatScanCiResult(result, { minimumScore })
+          : formatScanResult(result, { color })
+    );
+
+    if (options.ci === true) {
+      process.exitCode = evaluateScanCiResult(result, { minimumScore }).exitCode;
+    }
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unknown error";
     console.error(

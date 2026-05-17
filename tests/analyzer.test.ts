@@ -106,6 +106,35 @@ describe("analyzeReadiness", () => {
     }
   });
 
+  it("returns Ready with gaps when high-scoring repositories still have missing items", async () => {
+    const root = await createTempRepository({
+      "README.md": "# Test Project",
+      "AGENTS.md": "# Instructions",
+      ".env.example": "TEST_VALUE=",
+      "package.json": JSON.stringify({
+        scripts: {
+          dev: "tsx src/cli.ts",
+          build: "tsc -p tsconfig.json",
+          test: "vitest run",
+          lint: "eslint .",
+          format: "prettier --write ."
+        }
+      }),
+      "pnpm-lock.yaml": "",
+      ".git/": ""
+    });
+
+    try {
+      const analysis = analyzeReadiness(await scanRepository(root));
+
+      expect(analysis.score).toBe(90);
+      expect(analysis.status).toBe("Ready with gaps");
+      expect(analysis.nextSteps).toEqual(["Run agent-ready init to generate missing base files."]);
+    } finally {
+      await rm(root, { recursive: true, force: true });
+    }
+  });
+
   it("returns deterministic analysis for the same scan result", async () => {
     const root = await createTempRepository({
       "README.md": "# Test Project",

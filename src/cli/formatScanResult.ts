@@ -90,7 +90,7 @@ function formatTools(
       ? tools.map((tool) => toolItem(tool.name, tool.files.join(", "), tool.detected, options))
       : ["  None detected."];
 
-  return ["Tool use:", ...renderedTools, ""].join("\n");
+  return ["Agent tool configs:", ...renderedTools, ""].join("\n");
 }
 
 function formatStatus(status: string, options: PresentationOptions): string {
@@ -98,7 +98,7 @@ function formatStatus(status: string, options: PresentationOptions): string {
     return success(status, options);
   }
 
-  if (status === "Almost ready") {
+  if (status === "Ready with gaps" || status === "Almost ready") {
     return warning(status, options);
   }
 
